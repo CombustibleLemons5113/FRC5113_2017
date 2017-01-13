@@ -39,9 +39,16 @@ public class DriveTrain {
 		double backLeftPower = (double) -(cosine * magnitude + rotation);//+
 		double backRightPower = (double) (sine * magnitude - rotation);//-
 
-		bl.setSpeed(backLeftPower);
-		br.setSpeed(backRightPower);
-		fl.setSpeed(frontLeftPower);
-		fr.setSpeed(frontRightPower);
+		//bl.setSpeed(backLeftPower);
+		//br.setSpeed(backRightPower);
+		//fl.setSpeed(frontLeftPower);
+		//fr.setSpeed(frontRightPower);
+	}
+	
+	public void testDrive(double value)
+	{
+		value *= 128 + 128;
+		
+		fl.setRaw((int) value);
 	}
 }

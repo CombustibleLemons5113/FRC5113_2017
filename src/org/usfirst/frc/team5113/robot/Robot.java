@@ -2,9 +2,10 @@
 package org.usfirst.frc.team5113.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import subsystems.DriveTrain;
+import subsystems.JoystickManager;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,6 +24,11 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
+    
+    //Subsystems
+    DriveTrain driveTrain = new DriveTrain();
+    JoystickManager joystickManager = new JoystickManager();
+    
     public void robotInit() {
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", defaultAuto);
@@ -64,7 +70,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+        //driveTrain.update();
+        joystickManager.update(driveTrain);
     }
     
     /**
