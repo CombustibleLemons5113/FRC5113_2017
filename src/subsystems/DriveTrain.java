@@ -1,24 +1,39 @@
 package subsystems;
 
-import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class DriveTrain {
 	
-	private PWM fl;
-	private PWM fr;
-	private PWM bl;
-	private PWM br;
+	//Not PWM WHYYYYYYYYYYYYYYYYYYYYYYYYY!!!!!!!!
+	private Talon fl;
+	private Talon fr;
+	private Talon bl;
+	private Talon br;
+	
+	private double df;
+	
+	RobotDrive roboDrive;
 	
 	public void init() {
 		//Initialize and set to CAN IDs.
 		//We can remap the IDs from within the web browser at roboRIO-5113.local
 
-		fl = new PWM(0);
-		fr = new PWM(1);
-		bl = new PWM(2);
-		br = new PWM(3);
-
+		fl = new Talon(0);
+		fr = new Talon(1);
+		bl = new Talon(2);
+		br = new Talon(3);
+		
+		roboDrive = new RobotDrive(bl, fl, br, fr);
+	}
+	
+	public void mecanumDrive3(double magnitude, double angle, double rotation) {
+		roboDrive.mecanumDrive_Cartesian(magnitude, angle, rotation, 0);
+	}
+	
+	public void mecanumDrive2(double magnitude, double angle, double rotation)
+	{
+		roboDrive.mecanumDrive_Polar(magnitude, angle, rotation);
 	}
 
 	//Controls the drive train
@@ -34,21 +49,23 @@ public class DriveTrain {
 		cosine = (double) Math.cos(newDirection);
 		sine = (double) Math.sin(newDirection);
 		
-		double frontLeftPower = (double) -(sine * magnitude + rotation);//+
-		double frontRightPower = (double) (cosine * magnitude - rotation);//-
-		double backLeftPower = (double) -(cosine * magnitude + rotation);//+
-		double backRightPower = (double) (sine * magnitude - rotation);//-
+		double frontLeftPower = (double) -(sine * magnitude - rotation);//+
+		double frontRightPower = (double) -(cosine * magnitude - rotation);//-
+		double backLeftPower = (double) (cosine * magnitude + rotation);//+
+		double backRightPower = (double) (sine * magnitude + rotation);//-
 
-		//bl.setSpeed(backLeftPower);
-		//br.setSpeed(backRightPower);
-		//fl.setSpeed(frontLeftPower);
-		//fr.setSpeed(frontRightPower);
+		bl.set(backLeftPower);
+		br.set(backRightPower);
+		fl.set(frontLeftPower);
+		fr.set(frontRightPower);
 	}
 	
-	public void testDrive(double value)
-	{
-		value *= 128 + 128;
+	public double driveForward(JoystickManager j) {
+		df = j.getDriveForward();
 		
-		fl.setRaw((int) value);
+		if(Math.abs(df) < 0.05)
+			df = 0;
+		
+		return df;
 	}
 }
