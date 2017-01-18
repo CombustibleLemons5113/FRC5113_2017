@@ -1,6 +1,7 @@
 package subsystems;
 
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class DriveTrain {
@@ -15,6 +16,8 @@ public class DriveTrain {
 	
 	RobotDrive roboDrive;
 	
+	AnalogGyro gyro;
+	
 	public void init() {
 		//Initialize and set to CAN IDs.
 		//We can remap the IDs from within the web browser at roboRIO-5113.local
@@ -25,10 +28,19 @@ public class DriveTrain {
 		br = new Talon(3);
 		
 		roboDrive = new RobotDrive(bl, fl, br, fr);
+		
+		gyro = new AnalogGyro(0);
+		gyro.initGyro();
+		System.out.println("Gyro is now initiated\t" + gyro.getAngle());
 	}
 	
-	public void mecanumDrive3(double magnitude, double angle, double rotation) {
-		roboDrive.mecanumDrive_Cartesian(magnitude, angle, rotation, 0);
+	public void update(JoystickManager jm) {
+		if(jm.getGyroReset())
+			gyro.reset();
+	}
+	
+	public void mecanumDrive3(double x, double y, double rotation, double gyroAngle) {
+		roboDrive.mecanumDrive_Cartesian(x, y, rotation, gyroAngle);
 	}
 	
 	public void mecanumDrive2(double magnitude, double angle, double rotation)
@@ -49,10 +61,10 @@ public class DriveTrain {
 		cosine = (double) Math.cos(newDirection);
 		sine = (double) Math.sin(newDirection);
 		
-		double frontLeftPower = (double) -(sine * magnitude - rotation);//+
-		double frontRightPower = (double) -(cosine * magnitude - rotation);//-
-		double backLeftPower = (double) (cosine * magnitude + rotation);//+
-		double backRightPower = (double) (sine * magnitude + rotation);//-
+		double frontLeftPower = (double) -(sine * magnitude - rotation);
+		double frontRightPower = (double) -(cosine * magnitude - rotation);
+		double backLeftPower = (double) (cosine * magnitude + rotation);
+		double backRightPower = (double) (sine * magnitude + rotation);
 
 		bl.set(backLeftPower);
 		br.set(backRightPower);
@@ -60,12 +72,7 @@ public class DriveTrain {
 		fr.set(frontRightPower);
 	}
 	
-	public double driveForward(JoystickManager j) {
-		df = j.getDriveForward();
-		
-		if(Math.abs(df) < 0.05)
-			df = 0;
-		
-		return df;
+	public double getGyroAngle() {
+		return gyro.getAngle();
 	}
 }

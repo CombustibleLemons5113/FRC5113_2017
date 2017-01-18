@@ -2,41 +2,51 @@ package subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class JoystickManager
 {
 	Joystick joystick;
 	
-	double rotationalSensitivity = 0.5f;
+	private JoystickButton resetGyro;
 	
 	public void init()
 	{
 		joystick = new Joystick(0);
+		resetGyro = new JoystickButton(joystick, 2);
 	}
 	
-	private void handleXboxDrive(DriveTrain dt)
+	private void handleJoystickDrive(DriveTrain dt)
 	{
-		double angle = joystick.getZ();
+		double magX = joystick.getX();
+		double magY = joystick.getZ();
+		double rotation = joystick.getY();
+		double gyroAngle = dt.getGyroAngle();
+		System.out.println(gyroAngle);
 		
-		double axis = joystick.getY();
-		// Joystick drive control
-		//The magnitude uses sin so that it will drive at about 50% speed forward,
-		//And 100% speed sideways. Because mecanum requires more power sideways.
-		double mag = -joystick.getX();
+		if (magX > 0.99)
+			magX = 0.99;
+		else if (magX < -0.99)
+			magX = -0.99;
 		
-		if (Math.abs(angle) < 0.4f)
-		{
-			angle = 0;
-		}
-
-		dt.mecanumDrive3(mag / 2f, angle / 4f, axis / 4f);
+		if (magY > 0.99)
+			magY = 0.99;
+		else if (magY < -0.99)
+			magY = -0.99;
+		
+		if (rotation > 0.99)
+			rotation = 0.99;
+		else if (rotation < -0.99)
+			rotation = -0.99;
+		
+		dt.mecanumDrive3(magX, magY, rotation, gyroAngle);
 	}
 	
 	public void update(DriveTrain driveTrain) {
-		handleXboxDrive(driveTrain);
+		handleJoystickDrive(driveTrain);
 	}
 	
-	public double getDriveForward() {
-		return joystick.getY();
+	public boolean getGyroReset() {
+		return resetGyro.get();
 	}
 }
