@@ -2,6 +2,7 @@ package subsystems;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class DriveTrain {
@@ -12,7 +13,10 @@ public class DriveTrain {
 	private Talon bl;
 	private Talon br;
 	
-	private double df;
+	Encoder fle;
+	Encoder fre;
+	Encoder ble;
+	Encoder bre;
 	
 	RobotDrive roboDrive;
 	
@@ -27,16 +31,22 @@ public class DriveTrain {
 		bl = new Talon(2);
 		br = new Talon(3);
 		
+		fle = new Encoder(0, 1);//What are these parameters???
+		fre = new Encoder(0, 1);//What are these parameters???
+		ble = new Encoder(0, 1);//What are these parameters???
+		bre = new Encoder(0, 1);//What are these parameters???
+		
 		roboDrive = new RobotDrive(bl, fl, br, fr);
 		
 		gyro = new AnalogGyro(0);
 		gyro.initGyro();
 		System.out.println("Gyro is now initiated\t" + gyro.getAngle());
+		
+		gyro.calibrate();
 	}
 	
 	public void update(JoystickManager jm) {
-		if(jm.getGyroReset())
-			gyro.reset();
+		
 	}
 	
 	public void mecanumDrive3(double x, double y, double rotation, double gyroAngle) {
@@ -70,6 +80,22 @@ public class DriveTrain {
 		br.set(backRightPower);
 		fl.set(frontLeftPower);
 		fr.set(frontRightPower);
+	}
+	
+	public int checkFLE() {
+		return fle.getRaw();
+	}
+	
+	public int checkFRE() {
+		return fre.getRaw();
+	}
+	
+	public int checkBLE() {
+		return ble.getRaw();
+	}
+	
+	public int checkBRE() {
+		return bre.getRaw();
 	}
 	
 	public double getGyroAngle() {
