@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.RobotDrive;
 public class DriveTrain {
 	
 	//Not PWM WHYYYYYYYYYYYYYYYYYYYYYYYYY!!!!!!!!
-	private Talon fl;
-	private Talon fr;
-	private Talon bl;
-	private Talon br;
+	Talon fl;
+	Talon fr;
+	Talon bl;
+	Talon br;
 	
 	Encoder fle;
 	Encoder fre;

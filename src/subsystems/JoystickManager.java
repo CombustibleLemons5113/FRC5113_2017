@@ -31,23 +31,46 @@ public class JoystickManager
 		else if (magX < -0.99)
 			magX = -0.99;
 		
+		if (Math.abs(magX) < 0.05)
+			magX = 0;
+		
 		if (magY > 0.99)
 			magY = 0.99;
 		else if (magY < -0.99)
 			magY = -0.99;
+		
+		if (Math.abs(magY) < 0.1)
+			magY = 0;
 		
 		if (rotation > 0.99)
 			rotation = 0.99;
 		else if (rotation < -0.99)
 			rotation = -0.99;
 		
-		dt.mecanumDrive3(magX / 2, magY / 4, rotation / 4, gyroAngle);
+		if (Math.abs(rotation) < 0.05)
+			rotation = 0;
+		
+		dt.mecanumDrive3(magX, magY, rotation, gyroAngle);
 	}
 	
 	public void update(DriveTrain driveTrain) {
 		handleJoystickDrive(driveTrain);
 		
 		System.out.println("FLE :" + driveTrain.checkFLE() + "\nFRE :" + driveTrain.checkFRE() + "\nBLE :" + driveTrain.checkBLE() + "\nBRE :" + driveTrain.checkBRE());
+		
+		/*if((driveTrain.checkFLE() > 0) && (driveTrain.checkFRE() > 0) && (driveTrain.checkBLE() > 0) && (driveTrain.checkBRE() > 0)) {
+			if(driveTrain.checkFLE() != driveTrain.checkFRE())
+				driveTrain.fr.set(driveTrain.fl.getSpeed());
+			if(driveTrain.checkBLE() != driveTrain.checkBRE())
+				driveTrain.br.set(driveTrain.bl.getSpeed());
+		}
+		
+		if((driveTrain.checkFLE() < 0) && (driveTrain.checkFRE() < 0) && (driveTrain.checkBLE() < 0) && (driveTrain.checkBRE() < 0)) {
+			if(driveTrain.checkFLE() != driveTrain.checkFRE())
+				driveTrain.fr.set(driveTrain.fl.getSpeed());
+			if(driveTrain.checkBLE() != driveTrain.checkBRE())
+				driveTrain.br.set(driveTrain.bl.getSpeed());
+		}*/
 		
 		if(getGyroReset())
 			driveTrain.gyro.reset();
