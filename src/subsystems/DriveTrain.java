@@ -32,9 +32,9 @@ public class DriveTrain {
 		br = new Talon(3);
 		
 		fle = new Encoder(0, 1);//What are these parameters???
-		fre = new Encoder(0, 1);//What are these parameters???
-		ble = new Encoder(0, 1);//What are these parameters???
-		bre = new Encoder(0, 1);//What are these parameters???
+		fre = new Encoder(2, 3);
+		ble = new Encoder(4, 5);
+		bre = new Encoder(6, 7);
 		
 		roboDrive = new RobotDrive(bl, fl, br, fr);
 		
@@ -82,20 +82,20 @@ public class DriveTrain {
 		fr.set(frontRightPower);
 	}
 	
-	public int checkFLE() {
-		return fle.getRaw();
+	public double checkFLE() {
+		return -fle.getRate();
 	}
 	
-	public int checkFRE() {
-		return fre.getRaw();
+	public double checkFRE() {
+		return fre.getRate();
 	}
 	
-	public int checkBLE() {
-		return ble.getRaw();
+	public double checkBLE() {
+		return -ble.getRate();
 	}
 	
-	public int checkBRE() {
-		return bre.getRaw();
+	public double checkBRE() {
+		return bre.getRate();
 	}
 	
 	public double getGyroAngle() {

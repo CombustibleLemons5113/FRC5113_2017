@@ -24,7 +24,7 @@ public class JoystickManager
 		magY = joystick.getZ();
 		rotation = joystick.getY();
 		gyroAngle = dt.getGyroAngle();
-		System.out.println(gyroAngle);
+		//System.out.println(gyroAngle);
 		
 		if (magX > 0.99)
 			magX = 0.99;
@@ -47,26 +47,10 @@ public class JoystickManager
 	public void update(DriveTrain driveTrain) {
 		handleJoystickDrive(driveTrain);
 		
+		System.out.println("FLE :" + driveTrain.checkFLE() + "\nFRE :" + driveTrain.checkFRE() + "\nBLE :" + driveTrain.checkBLE() + "\nBRE :" + driveTrain.checkBRE());
+		
 		if(getGyroReset())
 			driveTrain.gyro.reset();
-	}
-	
-	public double getXMag() {
-		return joystick.getX();
-	}
-	
-	public void setXMag(DriveTrain driveTrain, double x) {
-		if(driveTrain.checkFLE() != driveTrain.checkFRE()) {
-			
-		}
-	}
-	
-	public double getYMag() {
-		return joystick.getZ();
-	}
-	
-	public double getRotation() {
-		return joystick.getY();
 	}
 	
 	public boolean getGyroReset() {
