@@ -46,7 +46,7 @@ public class DriveTrain {
 	}
 	
 	public void update(JoystickManager jm) {
-		
+		//System.out.println("FL: " + -fl.getSpeed() + "\nFR: " + fr.getSpeed() + "\nBL: " + -bl.getSpeed() + "\nBR: " + br.getSpeed());
 	}
 	
 	public void mecanumDrive3(double x, double y, double rotation, double gyroAngle) {

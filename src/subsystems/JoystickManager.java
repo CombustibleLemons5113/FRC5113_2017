@@ -39,7 +39,7 @@ public class JoystickManager
 		else if (magY < -0.99)
 			magY = -0.99;
 		
-		if (Math.abs(magY) < 0.1)
+		if (Math.abs(magY) < 0.4)
 			magY = 0;
 		
 		if (rotation > 0.99)
@@ -50,7 +50,7 @@ public class JoystickManager
 		if (Math.abs(rotation) < 0.05)
 			rotation = 0;
 		
-		dt.mecanumDrive3(magX, magY, rotation, gyroAngle);
+		dt.mecanumDrive3(-magX, magY / 3, rotation / 3, gyroAngle);
 	}
 	
 	public void update(DriveTrain driveTrain) {
