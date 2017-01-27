@@ -14,7 +14,7 @@ import subsystems.JoystickManager;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot_backup extends IterativeRobot {
 	
     private DriveTrain driveTrain;
     private JoystickManager controller;

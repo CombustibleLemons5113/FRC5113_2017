@@ -66,20 +66,44 @@ public class DriveTrain {
 
 		//As the mecanum drive is X-Shaped, we must adjust to be at 45* angles.
 		double newDirection = (double) (angle + 45);
-		newDirection = (double) (newDirection * Math.PI) / 180f;
+		newDirection = (double) (newDirection * Math.PI) / 180;
 		double cosine, sine;
 		cosine = (double) Math.cos(newDirection);
 		sine = (double) Math.sin(newDirection);
 		
-		double frontLeftPower = (double) -(sine * magnitude - rotation);
-		double frontRightPower = (double) -(cosine * magnitude - rotation);
-		double backLeftPower = (double) (cosine * magnitude + rotation);
-		double backRightPower = (double) (sine * magnitude + rotation);
+		double frontLeftSpeed = -(sine * magnitude + rotation);//+
+		double frontRightSpeed = (cosine * magnitude - rotation);//-
+		double backLeftSpeed = -(cosine * magnitude + rotation);//+
+		double backRightSpeed = (sine * magnitude - rotation);//-
+		
+		//System.out.println("FLS: " + frontLeftSpeed + "\nFRS: "+ frontRightSpeed + "\nBLS: " + backLeftSpeed + "\nBRS: " + backRightSpeed);
 
-		bl.set(backLeftPower);
-		br.set(backRightPower);
-		fl.set(frontLeftPower);
-		fr.set(frontRightPower);
+		if(frontLeftSpeed >= 1)
+			frontLeftSpeed = 0.99;
+		else if(frontLeftSpeed <= -1)
+			frontLeftSpeed = -0.99;
+		
+		if(frontRightSpeed >= 1)
+			frontRightSpeed = 0.99;
+		else if(frontRightSpeed <= -1)
+			frontRightSpeed = -0.99;
+		
+		if(backLeftSpeed >= 1)
+			backLeftSpeed = 0.99;
+		else if(backLeftSpeed <= -1)
+			backLeftSpeed = -0.99;
+		
+		if(backRightSpeed >= 1)
+			backRightSpeed = 0.99;
+		else if(backRightSpeed <= -1)
+			backRightSpeed = -0.99;
+		
+		bl.set(backLeftSpeed);
+		br.set(backRightSpeed);
+		fl.set(frontLeftSpeed);
+		fr.set(frontRightSpeed);
+//		double encoderTest = (double) -fle.getRate();
+//		System.out.println (encoderTest);
 	}
 	
 	public double checkFLE() {
@@ -101,4 +125,6 @@ public class DriveTrain {
 	public double getGyroAngle() {
 		return gyro.getAngle();
 	}
+	
+	
 }
