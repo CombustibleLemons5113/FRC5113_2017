@@ -22,6 +22,8 @@ public class DriveTrain {
 	
 	AnalogGyro gyro;
 	
+	JoystickManager jm;
+	
 	public void init() {
 		//Initialize and set to CAN IDs.
 		//We can remap the IDs from within the web browser at roboRIO-5113.local
@@ -46,7 +48,7 @@ public class DriveTrain {
 	}
 	
 	public void update(JoystickManager jm) {
-		//System.out.println("FL: " + -fl.getSpeed() + "\nFR: " + fr.getSpeed() + "\nBL: " + -bl.getSpeed() + "\nBR: " + br.getSpeed());
+		
 	}
 	
 	public void mecanumDrive3(double x, double y, double rotation, double gyroAngle) {
@@ -59,21 +61,21 @@ public class DriveTrain {
 	}
 
 	//Controls the drive train
-	public void mecanumDrive(double magnitude, double angle, double rotation)
+	public void mecanumDrive(double magnitude, double angle, double rotation, double desiredSpeed)
 	{			
 		//Makes sure that magnitude fits into the range [0, 0.99] as expected. Hardware errors can otherwise cause small movement changes.
 		magnitude = Math.min(Math.abs(magnitude), 0.99);
 
 		//As the mecanum drive is X-Shaped, we must adjust to be at 45* angles.
-		double newDirection = (double) (angle + 45);
-		newDirection = (double) (newDirection * Math.PI) / 180;
-		double cosine, sine;
-		cosine = (double) Math.cos(newDirection);
-		sine = (double) Math.sin(newDirection);
+		double newDirection = angle + (double) (Math.PI / 4);
+		//newDirection = (double) (newDirection * Math.PI) / 180;
+		//System.out.println(newDirection);
+		double cosine = (double) Math.cos(newDirection);//(double) Math.cos(newDirection);
+		double sine = (double) Math.sin(newDirection);//(double) Math.sin(newDirection);
 		
 		double frontLeftSpeed = -(sine * magnitude + rotation);//+
-		double frontRightSpeed = (cosine * magnitude - rotation);//-
-		double backLeftSpeed = -(cosine * magnitude + rotation);//+
+		double frontRightSpeed = -(cosine * magnitude + rotation);//-
+		double backLeftSpeed = (cosine * magnitude - rotation);//+
 		double backRightSpeed = (sine * magnitude - rotation);//-
 		
 		//System.out.println("FLS: " + frontLeftSpeed + "\nFRS: "+ frontRightSpeed + "\nBLS: " + backLeftSpeed + "\nBRS: " + backRightSpeed);
@@ -98,12 +100,30 @@ public class DriveTrain {
 		else if(backRightSpeed <= -1)
 			backRightSpeed = -0.99;
 		
-		bl.set(backLeftSpeed);
-		br.set(backRightSpeed);
 		fl.set(frontLeftSpeed);
 		fr.set(frontRightSpeed);
-//		double encoderTest = (double) -fle.getRate();
-//		System.out.println (encoderTest);
+		bl.set(backLeftSpeed);
+		br.set(backRightSpeed);
+	}
+	
+	public void PIDdrive(double desiredSpeed) {
+		double k = 0.1;
+		
+		//These variables are in revolutions per second
+		double actualFLSpeed = checkFLE() / 360;
+		double actualFRSpeed = checkFRE() / 360;
+		double actualBLSpeed = checkBLE() / 360;
+		double actualBRSpeed = checkBRE() / 360;
+		
+		double ErrYFL = desiredSpeed - actualFLSpeed;
+		double ErrYFR = desiredSpeed - actualFRSpeed;
+		double ErrYBL = desiredSpeed - actualBLSpeed;
+		double ErrYBR = desiredSpeed - actualBRSpeed;
+		
+		fl.set(actualFLSpeed + (k * ErrYFL));
+		fr.set(actualFRSpeed + (k * ErrYFR));
+		bl.set(actualBLSpeed + (k * ErrYBL));
+		br.set(actualBRSpeed + (k * ErrYBR));
 	}
 	
 	public double checkFLE() {
@@ -124,7 +144,5 @@ public class DriveTrain {
 	
 	public double getGyroAngle() {
 		return gyro.getAngle();
-	}
-	
-	
+	}	
 }

@@ -20,9 +20,9 @@ public class JoystickManager
 	
 	private void handleJoystickDrive(DriveTrain dt)
 	{
-		double x = joystick.getX();
-		double y = joystick.getY();
-		double z = joystick.getZ();
+		double x = getXAxis();
+		double y = getYAxis();
+		double z = getZAxis();
 		
 		if (x > 0.99)
 			x = 0.99;
@@ -45,41 +45,43 @@ public class JoystickManager
 		else if (z < -0.99)
 			z = -0.99;
 		
-		if (Math.abs(z) < 0.05)
+		if (Math.abs(z) < 0.4)
 			z = 0;
 		
 		mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		angle = Math.atan2(y, x);
-		rotation = z * 180;
+		rotation = z;
 		//gyroAngle = dt.getGyroAngle();
 		//System.out.println(gyroAngle);
+		//System.out.println((angle / Math.PI) * 180);
+		//System.out.println("Mag: " + mag + "\nAngle: " + angle + "\nRotation: " + rotation);
 		
-		System.out.println("Mag: " + mag + "\nAngle: " + angle + "\nRotation: " + rotation);
+		double desiredXSpeed = getXAxis();
+		double desiredYSpeed = getYAxis() * 2.4;
+		double desiredZSpeed = getZAxis();
 		
-		dt.mecanumDrive(mag, angle, rotation);
+		dt.mecanumDrive(mag / 3, angle, rotation / 4, desiredYSpeed);
 	}
 	
 	public void update(DriveTrain driveTrain) {
 		handleJoystickDrive(driveTrain);
 		
-		//System.out.println("FLE :" + driveTrain.checkFLE() + "\nFRE :" + driveTrain.checkFRE() + "\nBLE :" + driveTrain.checkBLE() + "\nBRE :" + driveTrain.checkBRE());
-		
-		/*if((driveTrain.checkFLE() > 0) && (driveTrain.checkFRE() > 0) && (driveTrain.checkBLE() > 0) && (driveTrain.checkBRE() > 0)) {
-			if(driveTrain.checkFLE() != driveTrain.checkFRE())
-				driveTrain.fr.set(driveTrain.fl.getSpeed());
-			if(driveTrain.checkBLE() != driveTrain.checkBRE())
-				driveTrain.br.set(driveTrain.bl.getSpeed());
-		}
-		
-		if((driveTrain.checkFLE() < 0) && (driveTrain.checkFRE() < 0) && (driveTrain.checkBLE() < 0) && (driveTrain.checkBRE() < 0)) {
-			if(driveTrain.checkFLE() != driveTrain.checkFRE())
-				driveTrain.fr.set(driveTrain.fl.getSpeed());
-			if(driveTrain.checkBLE() != driveTrain.checkBRE())
-				driveTrain.br.set(driveTrain.bl.getSpeed());
-		}*/
+		System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
 		
 		if(getGyroReset())
 			driveTrain.gyro.reset();
+	}
+	
+	public double getXAxis() {
+		return -joystick.getX();
+	}
+	
+	public double getYAxis() {
+		return -joystick.getY();
+	}
+	
+	public double getZAxis() {
+		return joystick.getZ();
 	}
 	
 	public boolean getGyroReset() {
