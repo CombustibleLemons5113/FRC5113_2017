@@ -56,17 +56,15 @@ public class JoystickManager
 		//System.out.println((angle / Math.PI) * 180);
 		//System.out.println("Mag: " + mag + "\nAngle: " + angle + "\nRotation: " + rotation);
 		
-		double desiredXSpeed = getXAxis();
-		double desiredYSpeed = getYAxis() * 2.4;
-		double desiredZSpeed = getZAxis();
 		
-		dt.mecanumDrive(mag / 3, angle, rotation / 4, desiredYSpeed);
+		
+		dt.mecanumDrive(mag / 1, angle, rotation / 4);
 	}
 	
 	public void update(DriveTrain driveTrain) {
 		handleJoystickDrive(driveTrain);
 		
-		System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
+		//System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
 		
 		if(getGyroReset())
 			driveTrain.gyro.reset();

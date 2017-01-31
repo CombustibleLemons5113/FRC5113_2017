@@ -30,6 +30,7 @@ public class Robot extends IterativeRobot {
         controller = new JoystickManager();
         controller.init();
         double FLmotorCurrent = 0;
+        
     }
     
 	/**
@@ -56,6 +57,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	controller.update(driveTrain);
     	driveTrain.update(controller);
+    	
+		//System.out.println("FL Speed: " + driveTrain.fl.getSpeed());
     }
     
     /**
