@@ -58,7 +58,7 @@ public class JoystickManager
 		
 		
 		
-		dt.mecanumDrive(mag / 1, angle, rotation / 4);
+		dt.mecanumDrive(mag, angle, rotation / 2);
 	}
 	
 	public void update(DriveTrain driveTrain) {

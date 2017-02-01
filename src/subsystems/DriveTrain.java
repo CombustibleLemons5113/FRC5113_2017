@@ -23,6 +23,14 @@ public class DriveTrain {
 	public double bri;
 	public double bli;
 	
+	public double ifl;
+	public double ifr;
+	public double ibl;
+	public double ibr;
+	
+	private long startTime;
+	private long elapsedTime;
+	
 	RobotDrive roboDrive;
 	
 	AnalogGyro gyro;
@@ -48,6 +56,13 @@ public class DriveTrain {
 		bri = 0;
 		bli = 0;
 		
+		ifl = 0;
+		ifr = 0;
+		ibl = 0;
+		ibr = 0;
+		
+		startTime = System.currentTimeMillis();
+		
 		roboDrive = new RobotDrive(bl, fl, br, fr);
 		
 		gyro = new AnalogGyro(0);
@@ -58,7 +73,7 @@ public class DriveTrain {
 	}
 	
 	public void update(JoystickManager jm) {
-		
+		elapsedTime = System.currentTimeMillis() - startTime;
 	}
 	
 	public void mecanumDrive3(double x, double y, double rotation, double gyroAngle) {
@@ -75,11 +90,11 @@ public class DriveTrain {
 	{			
 		//Makes sure that magnitude fits into the range [0, 0.99] as expected. Hardware errors can otherwise cause small movement changes.
 		magnitude = Math.min(Math.abs(magnitude), 0.99);
-		if(angle >= 1.9)
+		/*(if(angle >= 1.9)
 			angle = Math.PI/2;
 		else if (angle <= 1.3)
-			angle = Math.PI/2;
-		
+			angle = Math.PI/2;*/
+					
 		//As the mecanum drive is X-Shaped, we must adjust to be at 45* angles.
 		double newDirection = angle + (double) (Math.PI / 4);
 		//newDirection = (double) (newDirection * Math.PI) / 180;
@@ -87,10 +102,15 @@ public class DriveTrain {
 		double cosine = (double) Math.cos(newDirection);//(double) Math.cos(newDirection);
 		double sine = (double) Math.sin(newDirection);//(double) Math.sin(newDirection);
 		
-		double frontLeftSpeed = (sine * magnitude + rotation);//+
-		double frontRightSpeed = -(cosine * magnitude + rotation);//-
-		double backLeftSpeed = (cosine * magnitude - rotation);//+
-		double backRightSpeed = (sine * magnitude - rotation);//-
+		double frontRightSpeed = (sine * magnitude - rotation);
+		double frontLeftSpeed = -(cosine * magnitude - rotation);
+		double backRightSpeed = -(cosine * magnitude + rotation);
+		double backLeftSpeed = (sine * magnitude + rotation);
+		
+		/*double frontLeftSpeed = (sine * magnitude + rotation);
+		double frontRightSpeed = -(cosine * magnitude + rotation);
+		double backLeftSpeed = -(cosine * magnitude - rotation);
+		double backRightSpeed = (sine * magnitude - rotation);*/
 		
 		//System.out.println("FLS: " + frontLeftSpeed + "\nFRS: "+ frontRightSpeed + "\nBLS: " + backLeftSpeed + "\nBRS: " + backRightSpeed);
 		
@@ -119,7 +139,8 @@ public class DriveTrain {
 		fr.set(frontRightSpeed);
 		bl.set(backLeftSpeed);
 		br.set(backRightSpeed);*/
-		double k = 0.01;
+		
+		double kp = 0.01;
 		
 		//These variables are in revolutions per second
 		double actualFLSpeed = checkFLE() / 360;
@@ -134,24 +155,28 @@ public class DriveTrain {
 		double ErrYBL = (backLeftSpeed * maxSpeed) - actualBLSpeed;
 		double ErrYBR = (backRightSpeed * maxSpeed) - actualBRSpeed;
 		
-		fri += (k * ErrYFR);
-		fli -= (k * ErrYFL);
-		//bri += (k * ErrYBR);
-		//bli += (k * ErrYBL);
+		//Proportional
+		fri += (kp * ErrYFR);
+		fli -= (kp * ErrYFL);
+		bri += (kp * ErrYBR);
+		bli -= (kp * ErrYBL);
 		
-		System.out.println("FL Speed: " + frontLeftSpeed);
-		//System.out.println("BL Speed: " + actualBLSpeed);
-		System.out.println("FR Speed: " + frontRightSpeed);
-		System.out.println(rotation);
+		//Intergral
+		double ki = .01;
+		
+		
+		
+		
+		System.out.println("FR Speed: " + actualFRSpeed);
+		System.out.println("FL Speed: " + actualFLSpeed);
+		System.out.println("BR Speed: " + actualBRSpeed);
+		System.out.println("BL Speed: " + actualBLSpeed);
+		System.out.println(backRightSpeed * maxSpeed);
 		
 		fl.set(fli);
 		fr.set(fri);
-		//bl.set(bli);
-		//br.set(bri);
-	}
-	
-	public void PIDdrive(double desiredSpeed) {
-		
+		bl.set(bli);
+		br.set(bri);
 	}
 	
 	public double checkFLE() {
