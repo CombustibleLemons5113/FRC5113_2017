@@ -1,21 +1,36 @@
 package subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class JoystickManager
 {
-	Joystick joystick;
+	private Joystick joystick;
+	private Joystick xboxController;
 	
 	private double mag, angle, rotation, gyroAngle;
 	
 	private JoystickButton resetGyro;
+	private JoystickButton servoUp, servoDown;
 	
 	public void init()
 	{
 		joystick = new Joystick(0);
+		xboxController = new Joystick(1);
+		
 		resetGyro = new JoystickButton(joystick, 2);
+		
+		servoUp = new JoystickButton(xboxController, 3);
+		servoDown = new JoystickButton(xboxController, 0);
+	}
+	
+	public void update(DriveTrain driveTrain, Shooter shooter) {
+		handleJoystickDrive(driveTrain);
+		handleXboxControls(shooter);
+		//System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
+		
+		if(getGyroReset())
+			driveTrain.gyro.reset();
 	}
 	
 	private void handleJoystickDrive(DriveTrain dt)
@@ -61,13 +76,12 @@ public class JoystickManager
 		dt.mecanumDrive(mag, angle, rotation / 2);
 	}
 	
-	public void update(DriveTrain driveTrain) {
-		handleJoystickDrive(driveTrain);
-		
-		//System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
-		
-		if(getGyroReset())
-			driveTrain.gyro.reset();
+	public void handleXboxControls(Shooter shooter)
+	{
+		if(servoUp.get())
+			shooter.servo.setAngle(180);
+		else if(servoDown.get())
+			shooter.servo.setAngle(0);
 	}
 	
 	public double getXAxis() {

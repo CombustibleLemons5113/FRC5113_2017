@@ -1,10 +1,9 @@
 package org.usfirst.frc.team5113.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.DriveTrain;
 import subsystems.JoystickManager;
+import subsystems.Shooter;
+import edu.wpi.first.wpilibj.IterativeRobot;
 
 
 /**
@@ -18,6 +17,7 @@ public class Robot extends IterativeRobot {
 	
     private DriveTrain driveTrain;
     private JoystickManager controller;
+    private Shooter shooter;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -29,6 +29,8 @@ public class Robot extends IterativeRobot {
         driveTrain.init();
         controller = new JoystickManager();
         controller.init();
+        shooter = new Shooter();
+        shooter.init();
         double FLmotorCurrent = 0;
         
     }
@@ -55,8 +57,9 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	controller.update(driveTrain);
+    	controller.update(driveTrain, shooter);
     	driveTrain.update(controller);
+    	shooter.update();
     	
 		//System.out.println("FL Speed: " + driveTrain.fl.getSpeed());
     }
