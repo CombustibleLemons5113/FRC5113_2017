@@ -148,7 +148,7 @@ public class DriveTrain {
 		double actualBLSpeed = checkBLE() / 360;
 		double actualBRSpeed = checkBRE() / 360;
 		
-		double maxSpeed = 2.0;
+		double maxSpeed = 3.0;
 		
 		double ErrYFL = (frontLeftSpeed * maxSpeed) - actualFLSpeed;
 		double ErrYFR = (frontRightSpeed * maxSpeed) - actualFRSpeed;
