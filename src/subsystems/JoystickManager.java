@@ -12,6 +12,8 @@ public class JoystickManager
 	
 	private JoystickButton resetGyro;
 	private JoystickButton servoUp, servoDown;
+	private JoystickButton intakeIn, intakeOut;
+	private JoystickButton lowerOut;
 	
 	public void init()
 	{
@@ -22,6 +24,9 @@ public class JoystickManager
 		
 		servoUp = new JoystickButton(xboxController, 3);
 		servoDown = new JoystickButton(xboxController, 0);
+		intakeIn = new JoystickButton(xboxController, 6);
+		intakeOut = new JoystickButton(xboxController, 5);
+		lowerOut = new JoystickButton(xboxController, 2);
 	}
 	
 	public void update(DriveTrain driveTrain, Shooter shooter) {
@@ -82,6 +87,18 @@ public class JoystickManager
 			shooter.servo.setAngle(180);
 		else if(servoDown.get())
 			shooter.servo.setAngle(0);
+		
+		if(intakeIn.get())
+			shooter.shooterWheel.set(0.5);
+		else if(intakeIn.get())
+			shooter.shooterWheel.set(-0.5);
+		else
+			shooter.shooterWheel.set(0);
+		
+		if(lowerOut.get())
+			shooter.lowerOutput.set(-1);
+		else
+			shooter.lowerOutput.set(0);
 	}
 	
 	public double getXAxis() {
