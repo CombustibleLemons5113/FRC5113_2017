@@ -12,8 +12,19 @@ public class JoystickManager
 	
 	private JoystickButton resetGyro;
 	private JoystickButton servoUp, servoDown;
+	private JoystickButton shooterWheel, shooterWheelBack;
 	private JoystickButton intakeIn, intakeOut;
-	private JoystickButton lowerOut;
+	
+	private final int xboxA = 1;
+	private final int xboxB = 2;
+	private final int xboxX = 3;
+	private final int xboxY = 4;
+	private final int xboxLB = 5;
+	private final int xboxRB = 6;
+	private final int xboxBACK = 7;
+	private final int xboxSTART = 8;
+	private final int xboxLS = 9;
+	private final int xboxRS = 10;
 	
 	public void init()
 	{
@@ -22,11 +33,12 @@ public class JoystickManager
 		
 		resetGyro = new JoystickButton(joystick, 2);
 		
-		servoUp = new JoystickButton(xboxController, 3);
-		servoDown = new JoystickButton(xboxController, 0);
-		intakeIn = new JoystickButton(xboxController, 6);
-		intakeOut = new JoystickButton(xboxController, 5);
-		lowerOut = new JoystickButton(xboxController, 2);
+		//servoUp = new JoystickButton(xboxController, 3);
+		//servoDown = new JoystickButton(xboxController, 0);
+		shooterWheel = new JoystickButton(xboxController, xboxB);
+		shooterWheelBack = new JoystickButton(xboxController, xboxY);
+		intakeIn = new JoystickButton(xboxController, xboxA);
+		intakeOut = new JoystickButton(xboxController, xboxX);
 	}
 	
 	public void update(DriveTrain driveTrain, Shooter shooter) {
@@ -83,22 +95,24 @@ public class JoystickManager
 	
 	public void handleXboxControls(Shooter shooter)
 	{
-		if(servoUp.get())
+		/*if(servoUp.get())
 			shooter.servo.setAngle(180);
 		else if(servoDown.get())
-			shooter.servo.setAngle(0);
+			shooter.servo.setAngle(0);*/
 		
-		if(intakeIn.get())
+		if(shooterWheel.get())
+			shooter.shooterWheel.set(-0.65);
+		else if(shooterWheelBack.get())
 			shooter.shooterWheel.set(0.5);
-		else if(intakeIn.get())
-			shooter.shooterWheel.set(-0.5);
 		else
 			shooter.shooterWheel.set(0);
 		
-		if(lowerOut.get())
-			shooter.lowerOutput.set(-1);
+		/*if(intakeIn.get())
+			shooter.intake.set(0.5);
+		else if(intakeOut.get())
+			shooter.intake.set(-0.5);
 		else
-			shooter.lowerOutput.set(0);
+			shooter.intake.set(0);*/
 	}
 	
 	public double getXAxis() {
