@@ -43,8 +43,8 @@ public class DriveTrain {
 
 		fl = new Talon(0);
 		fr = new Talon(1);
-		bl = new Talon(2);
-		br = new Talon(4);//needs to be changed
+		bl = new Talon(4);
+		br = new Talon(3);//needs to be changed
 		
 		fle = new Encoder(0, 1);//What are these parameters???
 		fre = new Encoder(2, 3);

@@ -13,7 +13,7 @@ public class Shooter
 	public void init()
 	{
 		//servo = new Servo(9);
-		shooterWheel = new Talon(3);
+		shooterWheel = new Talon(2);
 		//intake = new Talon(420);
 	}
 	
