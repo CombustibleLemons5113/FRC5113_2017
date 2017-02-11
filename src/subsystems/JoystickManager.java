@@ -46,8 +46,8 @@ public class JoystickManager
 		handleXboxControls(shooter);
 		//System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
 		
-		if(getGyroReset())
-			driveTrain.gyro.reset();
+		/*if(getGyroReset())
+			driveTrain.gyro.reset();*/
 	}
 	
 	private void handleJoystickDrive(DriveTrain dt)

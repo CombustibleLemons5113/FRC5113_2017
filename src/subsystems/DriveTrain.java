@@ -1,6 +1,7 @@
 package subsystems;
 
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -8,10 +9,10 @@ import edu.wpi.first.wpilibj.RobotDrive;
 public class DriveTrain {
 	
 	//Not PWM WHYYYYYYYYYYYYYYYYYYYYYYYYY!!!!!!!!
-	public Talon fl;
-	public Talon fr;
-	public Talon bl;
-	public Talon br;
+	public TalonSRX fl;
+	public TalonSRX fr;
+	public TalonSRX bl;
+	public TalonSRX br;
 	
 	Encoder fle;
 	Encoder fre;
@@ -33,7 +34,7 @@ public class DriveTrain {
 	
 	RobotDrive roboDrive;
 	
-	AnalogGyro gyro;
+	//AnalogGyro gyro;
 	
 	JoystickManager jm;
 	
@@ -41,10 +42,10 @@ public class DriveTrain {
 		//Initialize and set to CAN IDs.
 		//We can remap the IDs from within the web browser at roboRIO-5113.local
 
-		fl = new Talon(0);
-		fr = new Talon(1);
-		bl = new Talon(4);
-		br = new Talon(3);//needs to be changed
+		fl = new TalonSRX(14);//All of these needs to be changed
+		fr = new TalonSRX(1);
+		bl = new TalonSRX(15);
+		br = new TalonSRX(0);
 		
 		fle = new Encoder(0, 1);//What are these parameters???
 		fre = new Encoder(2, 3);
@@ -65,11 +66,11 @@ public class DriveTrain {
 		
 		roboDrive = new RobotDrive(bl, fl, br, fr);
 		
-		gyro = new AnalogGyro(0);
+		/*gyro = new AnalogGyro(0);
 		gyro.initGyro();
 		System.out.println("Gyro is now initiated\t" + gyro.getAngle());
 		
-		gyro.calibrate();
+		gyro.calibrate();*/
 	}
 	
 	public void update(JoystickManager jm) {
@@ -135,10 +136,10 @@ public class DriveTrain {
 		else if(backRightSpeed <= -1)
 			backRightSpeed = -0.99;
 		
-		/*fl.set(frontLeftSpeed);
+		fl.set(frontLeftSpeed);
 		fr.set(frontRightSpeed);
 		bl.set(backLeftSpeed);
-		br.set(backRightSpeed);*/
+		br.set(backRightSpeed);
 		
 		double kp = 0.01;
 		
@@ -170,10 +171,11 @@ public class DriveTrain {
 		System.out.println("BL Speed: " + actualBLSpeed);
 		System.out.println(backRightSpeed * maxSpeed);
 		
-		fl.set(fli);
+		/*fl.set(fli);
 		fr.set(fri);
 		bl.set(bli);
-		br.set(bri);
+		br.set(bri);*/
+		
 	}
 	
 	public double checkFLE() {
@@ -192,7 +194,7 @@ public class DriveTrain {
 		return bre.getRate();
 	}
 	
-	public double getGyroAngle() {
+	/*public double getGyroAngle() {
 		return gyro.getAngle();
-	}	
+	}*/
 }
