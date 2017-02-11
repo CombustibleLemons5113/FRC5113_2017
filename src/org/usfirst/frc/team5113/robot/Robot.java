@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5113.robot;
 
+import subsystems.AutonManager;
 import subsystems.DriveTrain;
 import subsystems.JoystickManager;
 import subsystems.Shooter;
@@ -18,6 +19,8 @@ public class Robot extends IterativeRobot {
     private DriveTrain driveTrain;
     private JoystickManager controller;
     private Shooter shooter;
+    private AutonManager manager;
+    private double debounce;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -31,8 +34,20 @@ public class Robot extends IterativeRobot {
         controller.init();
         shooter = new Shooter();
         shooter.init();
+        manager = new AutonManager();
+        manager.init();
         double FLmotorCurrent = 0;
-        
+        debounce = -5000;
+    }
+    
+    //Dont know if this will work
+    public void disabledPeriodic()
+    {
+    	if(controller.getShooterWheelBack() && System.currentTimeMillis() - debounce > 500) 
+        {
+    		debounce = System.currentTimeMillis();
+    		manager.changeMode(controller.getShooterWheelBack());
+        }
     }
     
 	/**
@@ -51,6 +66,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	manager.update(driveTrain);
     }
 
     /**

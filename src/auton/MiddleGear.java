@@ -13,7 +13,7 @@ public class MiddleGear extends GearFrame
 		switch(caseSelector)
 		{
 		case 1:
-			manager.driveRight();
+			manager.driveRight(dt);
 			time = System.currentTimeMillis();
 			caseSelector = 2;
 			
@@ -26,7 +26,7 @@ public class MiddleGear extends GearFrame
 			break;
 		
 		case 3:
-			manager.stop();
+			manager.stop(dt);
 			System.out.println("Done!");
 			
 			break;
