@@ -1,18 +1,19 @@
 package subsystems;
 
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.TalonSRX;
-import edu.wpi.first.wpilibj.AnalogGyro;
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class DriveTrain {
 	
 	//Not PWM WHYYYYYYYYYYYYYYYYYYYYYYYYY!!!!!!!!
-	public TalonSRX fl;
-	public TalonSRX fr;
-	public TalonSRX bl;
-	public TalonSRX br;
+	public CANTalon fl;
+	public CANTalon fr;
+	public CANTalon bl;
+	public CANTalon br;
 	
 	Encoder fle;
 	Encoder fre;
@@ -42,10 +43,42 @@ public class DriveTrain {
 		//Initialize and set to CAN IDs.
 		//We can remap the IDs from within the web browser at roboRIO-5113.local
 
-		fl = new TalonSRX(14);//All of these needs to be changed
-		fr = new TalonSRX(1);
-		bl = new TalonSRX(15);
-		br = new TalonSRX(0);
+		fl = new CANTalon(14);//All of these needs to be changed
+		fr = new CANTalon(1);
+		bl = new CANTalon(15);
+		br = new CANTalon(0);
+		
+		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        fl.reverseSensor(false);
+        fl.setProfile(0);
+        fl.setF(0.1097);//Found it on the internet - Andy
+        fl.setP(0.22);//Found it on the internet - Andy
+        fl.setI(0); 
+        fl.setD(0);
+        
+        fr.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        fr.reverseSensor(false);
+        fr.setProfile(0);
+        fr.setF(0.1097);//Found it on the internet - Andy
+        fr.setP(0.22);//Found it on the internet - Andy
+        fr.setI(0); 
+        fr.setD(0);
+        
+        bl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        bl.reverseSensor(false);
+        bl.setProfile(0);
+        bl.setF(0.1097);//Found it on the internet - Andy
+        bl.setP(0.22);//Found it on the internet - Andy
+        bl.setI(0); 
+        bl.setD(0);
+        
+        br.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        br.reverseSensor(false);
+        br.setProfile(0);
+        br.setF(0.1097);//Found it on the internet - Andy
+        br.setP(0.22);//Found it on the internet - Andy
+        br.setI(0); 
+        br.setD(0);
 		
 		fle = new Encoder(0, 1);//What are these parameters???
 		fre = new Encoder(2, 3);
@@ -76,45 +109,22 @@ public class DriveTrain {
 	public void update(JoystickManager jm) {
 		elapsedTime = System.currentTimeMillis() - startTime;
 	}
-	
-	public void mecanumDrive3(double x, double y, double rotation, double gyroAngle) {
-		roboDrive.mecanumDrive_Cartesian(x, y, rotation, gyroAngle);
-	}
-	
-	public void mecanumDrive2(double magnitude, double angle, double rotation)
-	{
-		roboDrive.mecanumDrive_Polar(magnitude, angle, rotation);
-	}
 
 	//Controls the drive train
 	public void mecanumDrive(double magnitude, double angle, double rotation)
 	{			
 		//Makes sure that magnitude fits into the range [0, 0.99] as expected. Hardware errors can otherwise cause small movement changes.
 		magnitude = Math.min(Math.abs(magnitude), 0.99);
-		/*(if(angle >= 1.9)
-			angle = Math.PI/2;
-		else if (angle <= 1.3)
-			angle = Math.PI/2;*/
 					
 		//As the mecanum drive is X-Shaped, we must adjust to be at 45* angles.
 		double newDirection = angle + (double) (Math.PI / 4);
-		//newDirection = (double) (newDirection * Math.PI) / 180;
-		//System.out.println(newDirection);
-		double cosine = (double) Math.cos(newDirection);//(double) Math.cos(newDirection);
-		double sine = (double) Math.sin(newDirection);//(double) Math.sin(newDirection);
+		double cosine = (double) Math.cos(newDirection);
+		double sine = (double) Math.sin(newDirection);
 		
 		double frontRightSpeed = (sine * magnitude - rotation);
 		double frontLeftSpeed = -(cosine * magnitude - rotation);
 		double backRightSpeed = -(cosine * magnitude + rotation);
-		double backLeftSpeed = (sine * magnitude + rotation);
-		
-		/*double frontLeftSpeed = (sine * magnitude + rotation);
-		double frontRightSpeed = -(cosine * magnitude + rotation);
-		double backLeftSpeed = -(cosine * magnitude - rotation);
-		double backRightSpeed = (sine * magnitude - rotation);*/
-		
-		//System.out.println("FLS: " + frontLeftSpeed + "\nFRS: "+ frontRightSpeed + "\nBLS: " + backLeftSpeed + "\nBRS: " + backRightSpeed);
-		
+		double backLeftSpeed = (sine * magnitude + rotation);		
 		
 		if(frontLeftSpeed >= 1)
 			frontLeftSpeed = 0.99;
@@ -137,49 +147,13 @@ public class DriveTrain {
 			backRightSpeed = -0.99;
 		
 		fl.set(frontLeftSpeed);
-		fr.set(frontRightSpeed);
+		fr.set(-frontRightSpeed);
 		bl.set(backLeftSpeed);
-		br.set(backRightSpeed);
-		
-		double kp = 0.01;
-		
-		//These variables are in revolutions per second
-		double actualFLSpeed = checkFLE() / 360;
-		double actualFRSpeed = checkFRE() / 360;
-		double actualBLSpeed = checkBLE() / 360;
-		double actualBRSpeed = checkBRE() / 360;
-		
-		double maxSpeed = 3.0;
-		
-		double ErrYFL = (frontLeftSpeed * maxSpeed) - actualFLSpeed;
-		double ErrYFR = (frontRightSpeed * maxSpeed) - actualFRSpeed;
-		double ErrYBL = (backLeftSpeed * maxSpeed) - actualBLSpeed;
-		double ErrYBR = (backRightSpeed * maxSpeed) - actualBRSpeed;
-		
-		//Proportional
-		fri += (kp * ErrYFR);
-		fli -= (kp * ErrYFL);
-		bri += (kp * ErrYBR);
-		bli -= (kp * ErrYBL);
-		
-		//Intergral
-		double ki = .01;
-		
-		System.out.println("FR Speed: " + actualFRSpeed);
-		System.out.println("FL Speed: " + actualFLSpeed);
-		System.out.println("BR Speed: " + actualBRSpeed);
-		System.out.println("BL Speed: " + actualBLSpeed);
-		System.out.println(backRightSpeed * maxSpeed);
-		
-		/*fl.set(fli);
-		fr.set(fri);
-		bl.set(bli);
-		br.set(bri);*/
-		
+		br.set(-backRightSpeed);
 	}
 	
 	public double checkFLE() {
-		return -fle.getRate();
+		return fle.getRate();
 	}
 	
 	public double checkFRE() {
@@ -187,7 +161,7 @@ public class DriveTrain {
 	}
 	
 	public double checkBLE() {
-		return -ble.getRate();
+		return ble.getRate();
 	}
 	
 	public double checkBRE() {
