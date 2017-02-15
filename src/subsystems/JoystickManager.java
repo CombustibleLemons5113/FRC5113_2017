@@ -136,8 +136,4 @@ public class JoystickManager
 	public boolean getShooterWheelBack() {
 		return shooterWheelBack.get();
 	}
-	
-	public boolean getResetGyro() {
-		return resetGyro.get();
-	}
 }

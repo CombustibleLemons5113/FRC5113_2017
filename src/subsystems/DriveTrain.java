@@ -3,9 +3,11 @@ package subsystems;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SPI.Port;
 
 public class DriveTrain {
 	
@@ -14,6 +16,8 @@ public class DriveTrain {
 	public CANTalon fr;
 	public CANTalon bl;
 	public CANTalon br;
+	
+	public AHRS ahrs;
 	
 	Encoder fle;
 	Encoder fre;
@@ -47,6 +51,8 @@ public class DriveTrain {
 		fr = new CANTalon(1);
 		bl = new CANTalon(15);
 		br = new CANTalon(0);
+		
+		ahrs = new AHRS(Port.kMXP); //idk
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
@@ -108,6 +114,7 @@ public class DriveTrain {
 	
 	public void update(JoystickManager jm) {
 		elapsedTime = System.currentTimeMillis() - startTime;
+		System.out.println("X: " + ahrs.getDisplacementX() + "Y: " + ahrs.getDisplacementY() + "Z: " + ahrs.getDisplacementZ());
 	}
 
 	//Controls the drive train
