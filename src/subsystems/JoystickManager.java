@@ -92,8 +92,6 @@ public class JoystickManager
 		//System.out.println((angle / Math.PI) * 180);
 		//System.out.println("Mag: " + mag + "\nAngle: " + angle + "\nRotation: " + rotation);
 		
-		
-		
 		dt.mecanumDrive(mag, angle, rotation / 2);
 	}
 	
@@ -105,9 +103,7 @@ public class JoystickManager
 			shooter.servo.setAngle(0);*/
 		
 		if(shooterWheel.get())
-		{
 			shooter.shooterWheel.set(-0.59);
-		}
 		else if(shooterWheelBack.get())
 			shooter.shooterWheel.set(0.59);
 		else
