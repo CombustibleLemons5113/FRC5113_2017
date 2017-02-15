@@ -105,7 +105,9 @@ public class JoystickManager
 			shooter.servo.setAngle(0);*/
 		
 		if(shooterWheel.get())
-			shooter.shooterWheel.set(-0.59);
+		{
+			shooter.shooterWheel.set(-0.6);
+		}
 		else if(shooterWheelBack.get())
 			shooter.shooterWheel.set(0.59);
 		else

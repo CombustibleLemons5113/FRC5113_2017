@@ -3,6 +3,7 @@ package org.usfirst.frc.team5113.robot;
 import subsystems.AutonManager;
 import subsystems.DriveTrain;
 import subsystems.JoystickManager;
+import subsystems.NTHandler;
 import subsystems.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -20,6 +21,7 @@ public class Robot extends IterativeRobot {
     private JoystickManager controller;
     private Shooter shooter;
     private AutonManager manager;
+    private NTHandler nettab;
     private double debounce;
     
     /**
@@ -36,6 +38,8 @@ public class Robot extends IterativeRobot {
         shooter.init();
         manager = new AutonManager();
         manager.init();
+        nettab = new NTHandler();
+        nettab.init();
         double FLmotorCurrent = 0;
         debounce = -5000;
     }
@@ -76,6 +80,7 @@ public class Robot extends IterativeRobot {
     	controller.update(driveTrain, shooter);
     	driveTrain.update(controller);
     	shooter.update();
+    	nettab.update();
     	
 		//System.out.println("FL Speed: " + driveTrain.fl.getSpeed());
     }
