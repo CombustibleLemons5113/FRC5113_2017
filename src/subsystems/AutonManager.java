@@ -32,42 +32,6 @@ public class AutonManager
 			rightGear.update(dt);
 	}
 	
-	public void driveRight(DriveTrain dt)
-	{
-		mag = Math.sqrt(Math.pow(0.5, 2) + Math.pow(0, 2));
-		angle = Math.atan2(0, 0.5);
-		rotation = 0;
-		
-		dt.mecanumDrive(mag, angle, rotation);
-	}
-	
-	public void rotateRight(DriveTrain dt)
-	{
-		mag = Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2));
-		angle = Math.atan2(0, 0);
-		rotation = 0.5;
-		
-		dt.mecanumDrive(mag, angle, rotation);
-	}
-	
-	public void rotateLeft(DriveTrain dt)
-	{
-		mag = Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2));
-		angle = Math.atan2(0, 0);
-		rotation = -0.5;
-		
-		dt.mecanumDrive(mag, angle, rotation);
-	}
-	
-	public void stop(DriveTrain dt)
-	{
-		mag = Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2));
-		angle = Math.atan2(0, 0);
-		rotation = 0;
-		
-		dt.mecanumDrive(mag, angle, rotation);
-	}
-	
 	public void changeMode(boolean switchMode)
 	{
 		if(switchMode)
