@@ -5,12 +5,14 @@ import subsystems.NTHandler;
 
 public class LeftGear extends GearFrame
 {
-	private int caseSelector;
+	private int caseSelector = 1;
 	private double time;
+	private double mag = Math.sqrt(Math.pow(0.5, 2) + Math.pow(0, 2));
+	private double angle = Math.atan2(0, 0.5);
+	private double rotation = 0;
 	
 	public void update(DriveTrain dt, NTHandler nettab)
 	{
-		caseSelector = 1;
 		switch(caseSelector)
 		{
 		case 1:
@@ -33,9 +35,10 @@ public class LeftGear extends GearFrame
 			break;
 			
 		case 3:
-			manager.stop(dt);
+			dt.mecanumDrive(0, 0, 0);
 			System.out.println("Done!");
 			break;
 		}
+		dt.mecanumDrive(m, a, r);
 	}
 }

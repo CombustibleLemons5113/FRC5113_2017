@@ -81,6 +81,10 @@ public class JoystickManager
 		
 		if (Math.abs(z) < 0.4)
 			z = 0;
+		else if (z >= 0.4)
+			z = z - 0.4;
+		else if (z <= -0.4)
+			z = z + 0.4;
 		
 		mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		angle = Math.atan2(y, x);
@@ -89,8 +93,6 @@ public class JoystickManager
 		//System.out.println(gyroAngle);
 		//System.out.println((angle / Math.PI) * 180);
 		//System.out.println("Mag: " + mag + "\nAngle: " + angle + "\nRotation: " + rotation);
-		
-		
 		
 		dt.mecanumDrive(mag, angle, rotation / 2);
 	}
@@ -103,11 +105,9 @@ public class JoystickManager
 			shooter.servo.setAngle(0);*/
 		
 		if(shooterWheel.get())
-		{
-			shooter.shooterWheel.set(-0.6);
-		}
+			shooter.shooterWheel.set(-0.59);
 		else if(shooterWheelBack.get())
-			shooter.shooterWheel.set(0.6);
+			shooter.shooterWheel.set(0.59);
 		else
 			shooter.shooterWheel.set(0);
 		
@@ -140,5 +140,9 @@ public class JoystickManager
 	
 	public boolean getShooterWheelBack() {
 		return shooterWheelBack.get();
+	}
+	
+	public boolean getResetGyro() {
+		return resetGyro.get();
 	}
 }

@@ -14,7 +14,7 @@ public class Shooter
 	public void init()
 	{
 		//servo = new Servo(9);
-		shooterWheel = new Talon(3);//Needs to be changed
+		shooterWheel = new Talon(1);//Needs to be changed
 		//intake = new TalonSRX(420);
 	}
 	
