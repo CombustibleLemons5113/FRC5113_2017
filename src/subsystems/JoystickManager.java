@@ -2,6 +2,7 @@ package subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class JoystickManager
 {
@@ -27,6 +28,10 @@ public class JoystickManager
 	private final int xboxLS = 9;
 	private final int xboxRS = 10;
 	
+	public double shooterSpeed;
+	public double speedThresehold;
+	Encoder shooting;
+	
 	public void init()
 	{
 		joystick = new Joystick(0);
@@ -41,6 +46,9 @@ public class JoystickManager
 		intakeIn = new JoystickButton(xboxController, xboxA);
 		intakeOut = new JoystickButton(xboxController, xboxX);
 		gearDrive = new JoystickButton(xboxController, xboxRB);
+		shooterSpeed = 0;
+		speedThresehold = 0; //change to the desired speed once determined
+		shooting = new Encoder(8,9); //what?
 	}
 	
 	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler nettab, GearHandler gearHandler) {
@@ -111,6 +119,14 @@ public class JoystickManager
 		else
 			shooter.shooterWheel.set(0);
 		
+		shooterSpeed = shooting.getRate();
+		System.out.println("Current Speed: "+ shooterSpeed);
+		
+		/*if(Math.abs(shooterSpeed)<speedThresehold*.95)
+			System.out.println("Start: "+System.currentTimeMillis());
+		else if((Math.abs(shooterSpeed)>speedThresehold*.95) && (Math.abs(shooterSpeed)<speedThresehold*.98))
+			System.out.println("End: "+System.currentTimeMillis());
+		*/
 		if(gearDrive.get())
 			gearHandler.drive(dt, nettab);
 		
