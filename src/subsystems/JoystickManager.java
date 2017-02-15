@@ -2,6 +2,7 @@ package subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class JoystickManager
 {
@@ -14,6 +15,7 @@ public class JoystickManager
 	private JoystickButton servoUp, servoDown;
 	private JoystickButton shooterWheel, shooterWheelBack;
 	private JoystickButton intakeIn, intakeOut;
+	private JoystickButton gearDrive;
 	
 	private final int xboxA = 1;
 	private final int xboxB = 2;
@@ -25,6 +27,10 @@ public class JoystickManager
 	private final int xboxSTART = 8;
 	private final int xboxLS = 9;
 	private final int xboxRS = 10;
+	
+	public double shooterSpeed;
+	public double speedThresehold;
+	Encoder shooting;
 	
 	public void init()
 	{
@@ -39,11 +45,15 @@ public class JoystickManager
 		shooterWheelBack = new JoystickButton(xboxController, xboxY);
 		intakeIn = new JoystickButton(xboxController, xboxA);
 		intakeOut = new JoystickButton(xboxController, xboxX);
+		gearDrive = new JoystickButton(xboxController, xboxRB);
+		shooterSpeed = 0;
+		speedThresehold = 0; //change to the desired speed once determined
+		shooting = new Encoder(8,9); //what?
 	}
 	
-	public void update(DriveTrain driveTrain, Shooter shooter) {
+	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler nettab, GearHandler gearHandler) {
 		handleJoystickDrive(driveTrain);
-		handleXboxControls(shooter);
+		handleXboxControls(shooter, driveTrain, nettab, gearHandler);
 		//System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
 		
 		/*if(getGyroReset())
@@ -95,7 +105,7 @@ public class JoystickManager
 		dt.mecanumDrive(mag, angle, rotation / 2);
 	}
 	
-	public void handleXboxControls(Shooter shooter)
+	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler nettab, GearHandler gearHandler)
 	{
 		/*if(servoUp.get())
 			shooter.servo.setAngle(180);
@@ -108,6 +118,17 @@ public class JoystickManager
 			shooter.shooterWheel.set(0.59);
 		else
 			shooter.shooterWheel.set(0);
+		
+		shooterSpeed = shooting.getRate();
+		System.out.println("Current Speed: "+ shooterSpeed);
+		
+		/*if(Math.abs(shooterSpeed)<speedThresehold*.95)
+			System.out.println("Start: "+System.currentTimeMillis());
+		else if((Math.abs(shooterSpeed)>speedThresehold*.95) && (Math.abs(shooterSpeed)<speedThresehold*.98))
+			System.out.println("End: "+System.currentTimeMillis());
+		*/
+		if(gearDrive.get())
+			gearHandler.drive(dt, nettab);
 		
 		/*if(intakeIn.get())
 			shooter.intake.set(0.5);

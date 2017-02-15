@@ -1,6 +1,7 @@
 package auton;
 
 import subsystems.DriveTrain;
+import subsystems.NTHandler;
 
 public class LeftGear extends GearFrame
 {
@@ -10,48 +11,32 @@ public class LeftGear extends GearFrame
 	private double angle = Math.atan2(0, 0.5);
 	private double rotation = 0;
 	
-	public void update(DriveTrain dt)
+	public void update(DriveTrain dt, NTHandler nettab)
 	{
 		switch(caseSelector)
 		{
 		case 1:
-			drive(mag, angle, rotation);
-			time = System.currentTimeMillis();
-			caseSelector = 2;
+			dt.mecanumDrive(0.5, 90 * Math.PI / 180, 0);
 			
+			if(nettab.getZone() == 2)
+				caseSelector++;
 			break;
-			
 		case 2:
-			if(System.currentTimeMillis() - time > 3000)
-				caseSelector = 3;
+			if(nettab.getZone() == 1)
+				dt.mecanumDrive(0.3, 100 * Math.PI / 180, 0.2);
+			else if(nettab.getZone() == 2)
+				dt.mecanumDrive(0.3, 90 * Math.PI / 180, 0);
+			else if(nettab.getZone() == 3)
+				dt.mecanumDrive(0.3, 80 * Math.PI / 180, -0.2);
+			
+			if(nettab.getArea() > 100)
+				caseSelector++;
 			
 			break;
-		
+			
 		case 3:
-			drive(0, 0, 0.5);
-			time = System.currentTimeMillis();
-			caseSelector = 4;
-			
-			break;
-			
-		case 4:
-			if(System.currentTimeMillis() - time > 3000)
-			{
-				drive(0, 0, 0);
-				drive(mag, angle, rotation);
-				time = System.currentTimeMillis();
-				caseSelector = 5;
-			}
-			
-			break;
-			
-		case 5:
-			if(System.currentTimeMillis() - time > 3000)
-			{
-				drive(0, 0, 0);
-				System.out.println("Done!");
-			}
-			
+			dt.mecanumDrive(0, 0, 0);
+			System.out.println("Done!");
 			break;
 		}
 		dt.mecanumDrive(m, a, r);

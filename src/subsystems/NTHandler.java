@@ -8,10 +8,13 @@ public class NTHandler
 {
 	private NetworkTable table;
 	private int zone;
+	private double avgArea;
 	
 	public void init()
 	{
 		table = NetworkTable.getTable("GRIP/contoursReport");
+		zone = 2;
+		avgArea = 0;
 	}
 	
 	public void update()
@@ -35,7 +38,7 @@ public class NTHandler
 				double y = ys[i];
 				double mdpt = (validXs.get(0) + validXs.get(1)) / 2;
 					
-				System.out.print("y: " + y + ", ");
+				//System.out.print("y: " + y + ", ");
 				
 				if(mdpt < 220)
 					zone = 1;
@@ -43,16 +46,23 @@ public class NTHandler
 					zone = 3;
 				else
 					zone = 2;
+				
+				avgArea = (areas[0] + areas[1]) / 2;
 			}
 		}
-		else
-			System.out.println("Carry on.");
+		//else
+			//System.out.println("Carry on.");
 		
-		System.out.println();
+		//System.out.println();
 	}
 	
 	public int getZone()
 	{
 		return zone;
+	}
+	
+	public double getArea()
+	{
+		return avgArea;
 	}
 }
