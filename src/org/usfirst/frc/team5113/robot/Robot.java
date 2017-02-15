@@ -2,6 +2,7 @@ package org.usfirst.frc.team5113.robot;
 
 import subsystems.AutonManager;
 import subsystems.DriveTrain;
+import subsystems.GearHandler;
 import subsystems.JoystickManager;
 import subsystems.NTHandler;
 import subsystems.Shooter;
@@ -22,6 +23,7 @@ public class Robot extends IterativeRobot {
     private Shooter shooter;
     private AutonManager manager;
     private NTHandler nettab;
+    private GearHandler gearHandler;
     private double debounce;
     
     /**
@@ -40,6 +42,8 @@ public class Robot extends IterativeRobot {
         manager.init();
         nettab = new NTHandler();
         nettab.init();
+        gearHandler = new GearHandler();
+        gearHandler.init();
         double FLmotorCurrent = 0;
         debounce = -5000;
     }
@@ -70,17 +74,18 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	manager.update(driveTrain);
+    	manager.update(driveTrain, nettab);
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	controller.update(driveTrain, shooter);
+    	controller.update(driveTrain, shooter, nettab, gearHandler);
     	driveTrain.update(controller);
     	shooter.update();
     	nettab.update();
+    	//gearHandler.update(driveTrain, nettab);
     	
 		//System.out.println("FL Speed: " + driveTrain.fl.getSpeed());
     }

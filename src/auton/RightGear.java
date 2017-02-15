@@ -1,13 +1,14 @@
 package auton;
 
 import subsystems.DriveTrain;
+import subsystems.NTHandler;
 
 public class RightGear extends GearFrame
 {
 	private int caseSelector;
 	private double time;
 	
-	public void update(DriveTrain dt)
+	public void update(DriveTrain dt, NTHandler nettab)
 	{
 		caseSelector = 1;
 		switch(caseSelector)

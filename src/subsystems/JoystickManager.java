@@ -14,6 +14,7 @@ public class JoystickManager
 	private JoystickButton servoUp, servoDown;
 	private JoystickButton shooterWheel, shooterWheelBack;
 	private JoystickButton intakeIn, intakeOut;
+	private JoystickButton gearDrive;
 	
 	private final int xboxA = 1;
 	private final int xboxB = 2;
@@ -39,11 +40,12 @@ public class JoystickManager
 		shooterWheelBack = new JoystickButton(xboxController, xboxY);
 		intakeIn = new JoystickButton(xboxController, xboxA);
 		intakeOut = new JoystickButton(xboxController, xboxX);
+		gearDrive = new JoystickButton(xboxController, xboxRB);
 	}
 	
-	public void update(DriveTrain driveTrain, Shooter shooter) {
+	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler nettab, GearHandler gearHandler) {
 		handleJoystickDrive(driveTrain);
-		handleXboxControls(shooter);
+		handleXboxControls(shooter, driveTrain, nettab, gearHandler);
 		//System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
 		
 		/*if(getGyroReset())
@@ -93,7 +95,7 @@ public class JoystickManager
 		dt.mecanumDrive(mag, angle, rotation / 2);
 	}
 	
-	public void handleXboxControls(Shooter shooter)
+	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler nettab, GearHandler gearHandler)
 	{
 		/*if(servoUp.get())
 			shooter.servo.setAngle(180);
@@ -108,6 +110,9 @@ public class JoystickManager
 			shooter.shooterWheel.set(0.6);
 		else
 			shooter.shooterWheel.set(0);
+		
+		if(gearDrive.get())
+			gearHandler.drive(dt, nettab);
 		
 		/*if(intakeIn.get())
 			shooter.intake.set(0.5);

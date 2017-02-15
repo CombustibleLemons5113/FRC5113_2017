@@ -22,14 +22,14 @@ public class AutonManager
 		rightGear = new RightGear();
 	}
 	
-	public void update(DriveTrain dt)
+	public void update(DriveTrain dt, NTHandler nettab)
 	{
 		if(caseSelector == 1)
-			leftGear.update(dt);
+			leftGear.update(dt, nettab);
 		else if(caseSelector == 2)
-			middleGear.update(dt);
+			middleGear.update(dt, nettab);
 		else if(caseSelector == 3)
-			rightGear.update(dt);
+			rightGear.update(dt, nettab);
 	}
 	
 	public void driveRight(DriveTrain dt)
