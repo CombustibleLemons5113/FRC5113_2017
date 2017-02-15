@@ -106,7 +106,7 @@ public class JoystickManager
 		
 		if(shooterWheel.get())
 		{
-			shooter.shooterWheel.set(-0.6);
+			shooter.shooterWheel.set(-0.59);
 		}
 		else if(shooterWheelBack.get())
 			shooter.shooterWheel.set(0.59);
