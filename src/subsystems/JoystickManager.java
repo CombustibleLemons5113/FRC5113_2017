@@ -30,7 +30,6 @@ public class JoystickManager
 	
 	public double shooterSpeed;
 	public double speedThresehold;
-	Encoder shooting;
 	
 	public void init()
 	{
@@ -48,7 +47,6 @@ public class JoystickManager
 		gearDrive = new JoystickButton(xboxController, xboxRB);
 		shooterSpeed = 0;
 		speedThresehold = 0; //change to the desired speed once determined
-		shooting = new Encoder(8,9); //what?
 	}
 	
 	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler nettab, GearHandler gearHandler) {
@@ -113,20 +111,12 @@ public class JoystickManager
 			shooter.servo.setAngle(0);*/
 		
 		if(shooterWheel.get())
-			shooter.shooterWheel.set(-0.59);
+			shooter.shooterWheel.set(-.6);
 		else if(shooterWheelBack.get())
-			shooter.shooterWheel.set(0.59);
+			shooter.shooterWheel.set(0.6);
 		else
 			shooter.shooterWheel.set(0);
 		
-		shooterSpeed = shooting.getRate();
-		System.out.println("Current Speed: "+ shooterSpeed);
-		
-		/*if(Math.abs(shooterSpeed)<speedThresehold*.95)
-			System.out.println("Start: "+System.currentTimeMillis());
-		else if((Math.abs(shooterSpeed)>speedThresehold*.95) && (Math.abs(shooterSpeed)<speedThresehold*.98))
-			System.out.println("End: "+System.currentTimeMillis());
-		*/
 		if(gearDrive.get())
 			gearHandler.drive(dt, nettab);
 		

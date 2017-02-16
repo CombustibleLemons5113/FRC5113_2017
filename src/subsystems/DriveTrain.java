@@ -52,7 +52,7 @@ public class DriveTrain {
 		bl = new CANTalon(15);
 		br = new CANTalon(0);
 		
-		ahrs = new AHRS(Port.kMXP); //idk
+		//ahrs = new AHRS(Port.kMXP); //idk
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
@@ -114,7 +114,7 @@ public class DriveTrain {
 	
 	public void update(JoystickManager jm) {
 		elapsedTime = System.currentTimeMillis() - startTime;
-		System.out.println("X: " + ahrs.getDisplacementX() + "Y: " + ahrs.getDisplacementY() + "Z: " + ahrs.getDisplacementZ());
+		//System.out.println("X: " + ahrs.getDisplacementX() + "Y: " + ahrs.getDisplacementY() + "Z: " + ahrs.getDisplacementZ());
 	}
 
 	//Controls the drive train
