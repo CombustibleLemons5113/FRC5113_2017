@@ -6,7 +6,10 @@ import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SPI.Port;
 
 public class DriveTrain {
@@ -17,7 +20,7 @@ public class DriveTrain {
 	public CANTalon bl;
 	public CANTalon br;
 	
-	public AHRS ahrs;
+	public AHRS navx;
 	
 	Encoder fle;
 	Encoder fre;
@@ -52,7 +55,7 @@ public class DriveTrain {
 		bl = new CANTalon(15);
 		br = new CANTalon(0);
 		
-		//ahrs = new AHRS(Port.kMXP); //idk
+		navx = new AHRS(I2C.Port.kOnboard); //idk
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
@@ -110,11 +113,16 @@ public class DriveTrain {
 		System.out.println("Gyro is now initiated\t" + gyro.getAngle());
 		
 		gyro.calibrate();*/
+		navx.resetDisplacement(); //sets all displacement values (x,y,z) to zero
+		navx.reset(); //resets Angle
 	}
 	
 	public void update(JoystickManager jm) {
+		
 		elapsedTime = System.currentTimeMillis() - startTime;
-		//System.out.println("X: " + ahrs.getDisplacementX() + "Y: " + ahrs.getDisplacementY() + "Z: " + ahrs.getDisplacementZ());
+		System.out.println("X: " + navx.getDisplacementX() + "\nY: " + navx.getDisplacementY() + "\nZ: " + navx.getDisplacementZ());
+		System.out.println("Angle: " + navx.getAngle());
+		//System.out.println("X: " + navx.getQuaternionX() + "\nY: " + navx.getQuaternionY() + "\nZ: " + navx.getQuaternionZ());
 	}
 
 	//Controls the drive train

@@ -120,12 +120,12 @@ public class JoystickManager
 		if(gearDrive.get())
 			gearHandler.drive(dt, nettab);
 		
-		/*if(intakeIn.get())
-			shooter.intake.set(0.5);
+		if(intakeIn.get())
+			shooter.intake.set(0.99);
 		else if(intakeOut.get())
-			shooter.intake.set(-0.5);
+			shooter.intake.set(-0.99);
 		else
-			shooter.intake.set(0);*/
+			shooter.intake.set(0);
 	}
 	
 	public double getXAxis() {

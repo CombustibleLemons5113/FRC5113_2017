@@ -25,7 +25,7 @@ public class Shooter
 		shooterWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		speedThresehold = 0;
 		isStart = false;
-		//intake = new CANTalon();
+		intake = new CANTalon(5);
 		shooterSpeed = 0;
         shooterWheel.reverseSensor(false);
         shooterWheel.setProfile(0);
