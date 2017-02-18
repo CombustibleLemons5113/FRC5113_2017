@@ -1,8 +1,11 @@
 package subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import auton.LeftGear;
 import auton.MiddleGear;
 import auton.RightGear;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonManager
@@ -11,12 +14,15 @@ public class AutonManager
 	private double mag, angle, rotation;
 	private String autoName;
 	
+	public AHRS navx;
+	
 	LeftGear leftGear;
 	MiddleGear middleGear;
 	RightGear rightGear;
 	
 	public void init()
 	{
+		navx = new AHRS(I2C.Port.kOnboard);
 		leftGear = new LeftGear();
 		middleGear = new MiddleGear();
 		rightGear = new RightGear();

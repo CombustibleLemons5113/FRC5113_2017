@@ -19,4 +19,9 @@ public abstract class GearFrame
 		a = angle;
 		r = rotation;
 	}
+	
+	public double distance(long time)
+	{
+		return (manager.navx.getVelocityX()) * ((System.currentTimeMillis() - time) / 1000);
+	}
 }

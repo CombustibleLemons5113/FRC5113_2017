@@ -3,9 +3,8 @@ package subsystems;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.TalonSRX;
 
 public class Shooter
 {
@@ -14,17 +13,15 @@ public class Shooter
 	public CANTalon shooterWheel;
 	public CANTalon intake;
 	private double shooterSpeed;
-	private double speedThresehold;
-	private double startTime;
-	private double endTime;
-	private boolean isStart;
+	private double voltage, range;
+	
+	private AnalogInput usrf;
+	
 	public void init()
 	{
 		//servo = new Servo(9);
 		shooterWheel = new CANTalon(11);
 		shooterWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		speedThresehold = 0;
-		isStart = false;
 		intake = new CANTalon(5);
 		shooterSpeed = 0;
         shooterWheel.reverseSensor(false);
@@ -33,6 +30,8 @@ public class Shooter
         shooterWheel.setP(0.22);//Found it on the internet - Andy
         shooterWheel.setI(0); 
         shooterWheel.setD(0);
+        
+        usrf = new AnalogInput(1);
 	}
 	
 	public void update()
@@ -53,5 +52,11 @@ public class Shooter
 		//speedThresehold = (speedThresehold + shooterSpeed)/2.0;
 			
 	}
-	
+	public double getDistanceMeters()
+	{
+		voltage = usrf.getVoltage();
+		range = ((voltage * 1024) / 5) / 100;
+
+		return range;
+	}
 }

@@ -22,21 +22,6 @@ public class DriveTrain {
 	
 	public AHRS navx;
 	
-	Encoder fle;
-	Encoder fre;
-	Encoder ble;
-	Encoder bre;
-	
-	public double fri;
-	public double fli;
-	public double bri;
-	public double bli;
-	
-	public double ifl;
-	public double ifr;
-	public double ibl;
-	public double ibr;
-	
 	private long startTime;
 	private long elapsedTime;
 	
@@ -55,7 +40,7 @@ public class DriveTrain {
 		bl = new CANTalon(15);
 		br = new CANTalon(0);
 		
-		navx = new AHRS(I2C.Port.kOnboard); //idk
+		navx = new AHRS(I2C.Port.kOnboard);//idk
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
@@ -89,21 +74,6 @@ public class DriveTrain {
         br.setI(0); 
         br.setD(0);
 		
-		fle = new Encoder(0, 1);//What are these parameters???
-		fre = new Encoder(2, 3);
-		ble = new Encoder(4, 5);
-		bre = new Encoder(6, 7);
-		
-		fri = 0;
-		fli = 0;
-		bri = 0;
-		bli = 0;
-		
-		ifl = 0;
-		ifr = 0;
-		ibl = 0;
-		ibr = 0;
-		
 		startTime = System.currentTimeMillis();
 		
 		roboDrive = new RobotDrive(bl, fl, br, fr);
@@ -118,11 +88,9 @@ public class DriveTrain {
 	}
 	
 	public void update(JoystickManager jm) {
-		
 		elapsedTime = System.currentTimeMillis() - startTime;
-		System.out.println("X: " + navx.getDisplacementX() + "\nY: " + navx.getDisplacementY() + "\nZ: " + navx.getDisplacementZ());
+		System.out.println("X: " + navx.getVelocityX() + "\nY: " + navx.getVelocityY() + "\nZ: " + navx.getVelocityZ());
 		System.out.println("Angle: " + navx.getAngle());
-		//System.out.println("X: " + navx.getQuaternionX() + "\nY: " + navx.getQuaternionY() + "\nZ: " + navx.getQuaternionZ());
 	}
 
 	//Controls the drive train
@@ -165,22 +133,6 @@ public class DriveTrain {
 		fr.set(-frontRightSpeed);
 		bl.set(backLeftSpeed);
 		br.set(-backRightSpeed);
-	}
-	
-	public double checkFLE() {
-		return fle.getRate();
-	}
-	
-	public double checkFRE() {
-		return fre.getRate();
-	}
-	
-	public double checkBLE() {
-		return ble.getRate();
-	}
-	
-	public double checkBRE() {
-		return bre.getRate();
 	}
 	
 	/*public double getGyroAngle() {
