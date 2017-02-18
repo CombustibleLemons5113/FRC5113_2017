@@ -22,6 +22,6 @@ public abstract class GearFrame
 	
 	public double distance(long time)
 	{
-		return (manager.navx.getVelocityX()) * ((System.currentTimeMillis() - time) / 1000);
+		return (Math.abs((double)manager.navx.getVelocityX())) * ((double)(System.currentTimeMillis() - time) / 1000.0);//getVelocity is a float "TRIGGERRRRRED"
 	}
 }

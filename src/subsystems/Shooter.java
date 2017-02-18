@@ -12,6 +12,7 @@ public class Shooter
 	//public TalonSRX shooterWheel;
 	public CANTalon shooterWheel;
 	public CANTalon intake;
+	public CANTalon agitator;
 	private double shooterSpeed;
 	private double voltage, range;
 	
@@ -20,9 +21,11 @@ public class Shooter
 	public void init()
 	{
 		//servo = new Servo(9);
+		intake = new CANTalon(5);
+		//agitator = new CANTalon();
+		//agitator.set(0.1);
 		shooterWheel = new CANTalon(11);
 		shooterWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		intake = new CANTalon(5);
 		shooterSpeed = 0;
         shooterWheel.reverseSensor(false);
         shooterWheel.setProfile(0);

@@ -89,8 +89,8 @@ public class DriveTrain {
 	
 	public void update(JoystickManager jm) {
 		elapsedTime = System.currentTimeMillis() - startTime;
-		System.out.println("X: " + navx.getVelocityX() + "\nY: " + navx.getVelocityY() + "\nZ: " + navx.getVelocityZ());
-		System.out.println("Angle: " + navx.getAngle());
+		/*System.out.println("X: " + navx.getVelocityX() + "\nY: " + navx.getVelocityY() + "\nZ: " + navx.getVelocityZ());
+		System.out.println("Angle: " + navx.getAngle());*/
 	}
 
 	//Controls the drive train
