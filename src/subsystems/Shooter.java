@@ -21,8 +21,8 @@ public class Shooter
 	public void init()
 	{
 		//servo = new Servo(9);
-		intake = new CANTalon(5);
-		//agitator = new CANTalon();
+		//intake = new CANTalon(5);
+		//agitator = new CANTalon(10);
 		//agitator.set(0.1);
 		shooterWheel = new CANTalon(11);
 		shooterWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -40,7 +40,7 @@ public class Shooter
 	public void update()
 	{
 		shooterSpeed = shooterWheel.getSpeed();
-		System.out.println("Current Speed: "+ shooterSpeed);
+		//System.out.println("Current Speed: "+ shooterSpeed);
 		
 		/*if(Math.abs(shooterSpeed)<speedThresehold*.9 && (!isStart)){
 			startTime = System.currentTimeMillis();

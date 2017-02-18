@@ -14,28 +14,25 @@ public class AutonManager
 	private double mag, angle, rotation;
 	private String autoName;
 	
-	public AHRS navx;
-	
 	LeftGear leftGear;
 	MiddleGear middleGear;
 	RightGear rightGear;
 	
 	public void init()
 	{
-		navx = new AHRS(I2C.Port.kOnboard);
 		leftGear = new LeftGear();
 		middleGear = new MiddleGear();
 		rightGear = new RightGear();
 	}
 	
-	public void update(DriveTrain dt, NTHandler nettab)
+	public void update(DriveTrain dt)
 	{
 		if(caseSelector == 1)
-			leftGear.update(dt, nettab);
+			leftGear.update(dt);
 		else if(caseSelector == 2)
-			middleGear.update(dt, nettab);
+			middleGear.update(dt);
 		else if(caseSelector == 3)
-			rightGear.update(dt, nettab);
+			rightGear.update(dt);
 	}
 	
 	public void changeMode(boolean switchMode)

@@ -111,21 +111,21 @@ public class JoystickManager
 			shooter.servo.setAngle(0);*/
 		
 		if(shooterWheel.get())
-			shooter.shooterWheel.set(-.6);
+			shooter.shooterWheel.set(-.8);
 		else if(shooterWheelBack.get())
-			shooter.shooterWheel.set(0.6);
+			shooter.shooterWheel.set(0.8);
 		else
 			shooter.shooterWheel.set(0);
 		
 		if(gearDrive.get())
 			gearHandler.drive(dt, nettab);
 		
-		if(intakeIn.get())
+		/*if(intakeIn.get())
 			shooter.intake.set(0.99);
 		else if(intakeOut.get())
 			shooter.intake.set(-0.99);
 		else
-			shooter.intake.set(0);
+			shooter.intake.set(0);*/
 	}
 	
 	public double getXAxis() {

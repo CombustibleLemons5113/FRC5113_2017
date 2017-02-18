@@ -74,7 +74,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	manager.update(driveTrain, nettab);
+    	manager.update(driveTrain);
     }
 
     /**
@@ -84,7 +84,7 @@ public class Robot extends IterativeRobot {
     	controller.update(driveTrain, shooter, nettab, gearHandler);
     	driveTrain.update(controller);
     	shooter.update();
-    	nettab.update();
+    	//nettab.update();
     	//gearHandler.update(driveTrain, nettab);
     	
 		//System.out.println("FL Speed: " + driveTrain.fl.getSpeed());

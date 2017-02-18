@@ -135,6 +135,14 @@ public class DriveTrain {
 		br.set(-backRightSpeed);
 	}
 	
+	public double getXVelocity() {
+		return (double)navx.getVelocityX();
+	}
+	
+	public double getYVelocity() {
+		return (double)navx.getVelocityY();
+	}
+	
 	/*public double getGyroAngle() {
 		return gyro.getAngle();
 	}*/

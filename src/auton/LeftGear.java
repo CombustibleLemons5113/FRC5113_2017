@@ -11,9 +11,9 @@ public class LeftGear extends GearFrame
 	private double angle = Math.atan2(0, 0.5);
 	private double rotation = 0;
 	
-	public void update(DriveTrain dt, NTHandler nettab)
+	public void update(DriveTrain dt)
 	{
-		switch(caseSelector)
+		/*switch(caseSelector)
 		{
 		case 1:
 			dt.mecanumDrive(0.5, 90 * Math.PI / 180, 0);
@@ -39,6 +39,6 @@ public class LeftGear extends GearFrame
 			System.out.println("Done!");
 			break;
 		}
-		dt.mecanumDrive(m, a, r);
+		dt.mecanumDrive(m, a, r);*/
 	}
 }

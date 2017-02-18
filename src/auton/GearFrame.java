@@ -6,10 +6,12 @@ import subsystems.NTHandler;
 
 public abstract class GearFrame
 {
-	public abstract void update(DriveTrain dt, NTHandler nettab);
+	public abstract void update(DriveTrain dt);
 	public AutonManager manager;
+	public DriveTrain dt;
 	
 	public double m, a, r;
+	public double distance;
 	
 	public boolean flagCompleted;
 	
@@ -18,10 +20,5 @@ public abstract class GearFrame
 		m = mag;
 		a = angle;
 		r = rotation;
-	}
-	
-	public double distance(long time)
-	{
-		return (Math.abs((double)manager.navx.getVelocityX())) * ((double)(System.currentTimeMillis() - time) / 1000.0);//getVelocity is a float "TRIGGERRRRRED"
 	}
 }
