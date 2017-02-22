@@ -10,12 +10,14 @@ public class JoystickManager
 	private Joystick xboxController;
 	
 	private double mag, angle, rotation, gyroAngle;
+	private long time, time2, t;
+	private boolean agitatorToggle;
 	
 	private JoystickButton resetGyro;
-	private JoystickButton servoUp, servoDown;
-	private JoystickButton shooterWheel, shooterWheelBack;
+	private JoystickButton shooterMode, shooterWheelBack;
 	private JoystickButton intakeIn, intakeOut;
 	private JoystickButton gearDrive;
+	private JoystickButton stopAgit;
 	
 	private final int xboxA = 1;
 	private final int xboxB = 2;
@@ -33,20 +35,22 @@ public class JoystickManager
 	
 	public void init()
 	{
+		time = t = System.currentTimeMillis();
+		agitatorToggle = false;
+		
 		joystick = new Joystick(0);
 		xboxController = new Joystick(1);
 		
 		resetGyro = new JoystickButton(joystick, 2);
 		
-		//servoUp = new JoystickButton(xboxController, 3);
-		//servoDown = new JoystickButton(xboxController, 0);
-		shooterWheel = new JoystickButton(xboxController, xboxB);
+		shooterMode = new JoystickButton(xboxController, xboxB);
 		shooterWheelBack = new JoystickButton(xboxController, xboxY);
 		intakeIn = new JoystickButton(xboxController, xboxA);
 		intakeOut = new JoystickButton(xboxController, xboxX);
 		gearDrive = new JoystickButton(xboxController, xboxRB);
 		shooterSpeed = 0;
 		speedThresehold = 0; //change to the desired speed once determined
+		stopAgit = new JoystickButton(xboxController, xboxSTART);
 	}
 	
 	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler nettab, GearHandler gearHandler) {
@@ -105,27 +109,58 @@ public class JoystickManager
 	
 	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler nettab, GearHandler gearHandler)
 	{
-		/*if(servoUp.get())
+		if(shooterMode.get() && System.currentTimeMillis() - t > 500) {
+			agitatorToggle = !agitatorToggle;
+			t = System.currentTimeMillis();
+		}
+		if(agitatorToggle) {
+			shooter.servo.setAngle(0);
+			shooter.shooterWheel.set(-0.8);
+			
+			if(System.currentTimeMillis() - t > 1000)
+				shooter.agitator.set(-0.5);
+		}
+		else {
+			shooter.agitator.set(0);
 			shooter.servo.setAngle(180);
-		else if(servoDown.get())
-			shooter.servo.setAngle(0);*/
+			shooter.shooterWheel.set(0);
+		}
 		
-		if(shooterWheel.get())
+		/*if(shooterWheel.get()){
+			System.out.println("Not a Software Problem");//"Yeah, it's a software problem." -zbross 2017 (It wasn't a software problem)
 			shooter.shooterWheel.set(-.8);
+		}
 		else if(shooterWheelBack.get())
 			shooter.shooterWheel.set(0.8);
 		else
-			shooter.shooterWheel.set(0);
+			shooter.shooterWheel.set(0);*/
 		
 		if(gearDrive.get())
 			gearHandler.drive(dt, nettab);
 		
-		/*if(intakeIn.get())
+		/*if(stopAgit.get())
+			shooter.agitator.set(0);
+		else
+			shooter.agitator.set(-0.5);
+		else if(System.currentTimeMillis() - time > 1000) {
+			time += System.currentTimeMillis();
+			time2 = System.currentTimeMillis();
+			shooter.agitator.set(0.5);
+		}
+		else if(System.currentTimeMillis() - time2 > 1000) {
+			time2 += System.currentTimeMillis();
+			time = System.currentTimeMillis();
+			shooter.agitator.set(-0.5);
+		}*/
+		
+		/*shooter.agitator.set(-xboxController.getRawAxis(3));
+		System.out.println("Boi: " + xboxController.getRawAxis(3));*/
+		if(intakeIn.get())
 			shooter.intake.set(0.99);
 		else if(intakeOut.get())
 			shooter.intake.set(-0.99);
 		else
-			shooter.intake.set(0);*/
+			shooter.intake.set(0);
 	}
 	
 	public double getXAxis() {

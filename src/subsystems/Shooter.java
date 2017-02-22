@@ -20,13 +20,12 @@ public class Shooter
 	
 	public void init()
 	{
-		//servo = new Servo(9);
-		//intake = new CANTalon(5);
-		//agitator = new CANTalon(10);
-		//agitator.set(0.1);
+		servo = new Servo(0);
+		intake = new CANTalon(5);
+		agitator = new CANTalon(10);
 		shooterWheel = new CANTalon(11);
 		shooterWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		shooterSpeed = 0;
+		//shooterSpeed = 0;
         shooterWheel.reverseSensor(false);
         shooterWheel.setProfile(0);
         shooterWheel.setF(0.1097);//Found it on the internet - Andy
@@ -39,7 +38,7 @@ public class Shooter
 	
 	public void update()
 	{
-		shooterSpeed = shooterWheel.getSpeed();
+		//shooterSpeed = shooterWheel.getSpeed();
 		//System.out.println("Current Speed: "+ shooterSpeed);
 		
 		/*if(Math.abs(shooterSpeed)<speedThresehold*.9 && (!isStart)){
