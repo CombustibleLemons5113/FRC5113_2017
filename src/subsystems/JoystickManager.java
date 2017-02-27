@@ -2,7 +2,9 @@ package subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class JoystickManager
 {
@@ -10,14 +12,15 @@ public class JoystickManager
 	private Joystick xboxController;
 	
 	private double mag, angle, rotation, gyroAngle;
-	private long time, time2, t;
+	private long time, time2, t, time3, time4;
 	private boolean agitatorToggle;
 	
 	private JoystickButton resetGyro;
-	private JoystickButton shooterMode, shooterWheelBack;
+	private JoystickButton shooterMode;
+	private JoystickButton rustleMyJimmies;
 	private JoystickButton intakeIn, intakeOut;
 	private JoystickButton gearDrive;
-	private JoystickButton stopAgit;
+	private JoystickButton changeAuton, changeLight;
 	
 	private final int xboxA = 1;
 	private final int xboxB = 2;
@@ -35,22 +38,24 @@ public class JoystickManager
 	
 	public void init()
 	{
-		time = t = System.currentTimeMillis();
+		time = System.currentTimeMillis();
+		time3 = System.currentTimeMillis();
 		agitatorToggle = false;
 		
 		joystick = new Joystick(0);
 		xboxController = new Joystick(1);
 		
+		rustleMyJimmies = new JoystickButton(joystick, 7);
 		resetGyro = new JoystickButton(joystick, 2);
 		
 		shooterMode = new JoystickButton(xboxController, xboxB);
-		shooterWheelBack = new JoystickButton(xboxController, xboxY);
 		intakeIn = new JoystickButton(xboxController, xboxA);
 		intakeOut = new JoystickButton(xboxController, xboxX);
 		gearDrive = new JoystickButton(xboxController, xboxRB);
 		shooterSpeed = 0;
 		speedThresehold = 0; //change to the desired speed once determined
-		stopAgit = new JoystickButton(xboxController, xboxSTART);
+		changeAuton = new JoystickButton(xboxController, xboxSTART);
+		changeLight = new JoystickButton(xboxController, xboxBACK);
 	}
 	
 	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler nettab, GearHandler gearHandler) {
@@ -103,8 +108,22 @@ public class JoystickManager
 		//System.out.println(gyroAngle);
 		//System.out.println((angle / Math.PI) * 180);
 		//System.out.println("Mag: " + mag + "\nAngle: " + angle + "\nRotation: " + rotation);
-		
-		dt.mecanumDrive(mag, angle, rotation / 2);
+		if(rustleMyJimmies.get()) {
+			if(System.currentTimeMillis() - time3 > 500) {
+				time3 += System.currentTimeMillis();
+				time4 = System.currentTimeMillis();
+				dt.mecanumDrive(Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2)), Math.atan2(0, 0), 0.5);
+			}
+			else if(System.currentTimeMillis() - time4 > 500) {
+				time4 += System.currentTimeMillis();
+				time3 = System.currentTimeMillis();
+				dt.mecanumDrive(Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2)), Math.atan2(0, 0), -0.5);
+			}
+		}
+		else {
+			//dt.mecanumDrive(mag, angle, rotation / 2);
+			dt.fod(x, -y, z / 2, dt.getNavAngle());
+		}
 	}
 	
 	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler nettab, GearHandler gearHandler)
@@ -117,8 +136,18 @@ public class JoystickManager
 			shooter.servo.setAngle(0);
 			shooter.shooterWheel.set(-0.8);
 			
-			if(System.currentTimeMillis() - t > 1000)
-				shooter.agitator.set(-0.5);
+			if(System.currentTimeMillis() - t > 1000) {
+				if(System.currentTimeMillis() - time > 2000) {
+					time += System.currentTimeMillis();
+					time2 = System.currentTimeMillis();
+					shooter.agitator.set(0.99);
+				}
+				else if(System.currentTimeMillis() - time2 > 500) {
+					time2 += System.currentTimeMillis();
+					time = System.currentTimeMillis();
+					shooter.agitator.set(-0.99);
+				}
+			}
 		}
 		else {
 			shooter.agitator.set(0);
@@ -155,12 +184,18 @@ public class JoystickManager
 		
 		/*shooter.agitator.set(-xboxController.getRawAxis(3));
 		System.out.println("Boi: " + xboxController.getRawAxis(3));*/
-		if(intakeIn.get())
+		if(intakeIn.get()) {
 			shooter.intake.set(0.99);
-		else if(intakeOut.get())
+			rumble(true);
+		}
+		else if(intakeOut.get()) {
 			shooter.intake.set(-0.99);
-		else
+			rumble(true);
+		}
+		else {
 			shooter.intake.set(0);
+			rumble(false);
+		}
 	}
 	
 	public double getXAxis() {
@@ -179,7 +214,22 @@ public class JoystickManager
 		return resetGyro.get();
 	}
 	
-	public boolean getShooterWheelBack() {
-		return shooterWheelBack.get();
+	public boolean getChangeAuton() {
+		return changeAuton.get();
+	}
+	
+	public boolean getChangeLight() {
+		return changeLight.get();
+	}
+	
+	public void rumble(boolean state) {
+		if(state) {
+			xboxController.setRumble(RumbleType.kLeftRumble, 1);
+			xboxController.setRumble(RumbleType.kRightRumble, 1);
+		}
+		else {
+			xboxController.setRumble(RumbleType.kLeftRumble, 0);
+			xboxController.setRumble(RumbleType.kRightRumble, 0);
+		}
 	}
 }

@@ -1,12 +1,20 @@
 package subsystems;
 
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Direction;
+import edu.wpi.first.wpilibj.Relay.Value;
+
 public class GearHandler
 {
+	public Relay lightRelay;
 	private int zone;
+	private boolean lightOn;
 	
 	public void init()
 	{
 		zone = 2;
+		lightRelay = new Relay(0);//set 0 to the port number
 	}
 	
 	public void drive(DriveTrain dt, NTHandler nettab)
@@ -26,4 +34,24 @@ public class GearHandler
 		else
 			System.out.println("Done!");
 	}
+	
+	public void setOff() {
+		lightRelay.set(Value.kOff);
+		lightRelay.set(Value.kReverse);
+	}
+	
+	public void setOn() {
+		lightRelay.set(Value.kOn);
+		lightRelay.set(Value.kForward);
+	}
+	
+	/*public void disabledUpdate()
+	{
+		SmartDashboard.putBoolean("Light", false);
+    	
+    	if(lightOn)
+    		lightRelay.set(Value.kOn);
+    	else
+    		lightRelay.set(Value.kOff);
+	}*/ 
 }

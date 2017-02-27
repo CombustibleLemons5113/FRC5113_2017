@@ -33,7 +33,7 @@ public class Shooter
         shooterWheel.setI(0); 
         shooterWheel.setD(0);
         
-        usrf = new AnalogInput(1);
+        usrf = new AnalogInput(0);
 	}
 	
 	public void update()

@@ -7,6 +7,7 @@ import subsystems.JoystickManager;
 import subsystems.NTHandler;
 import subsystems.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -24,14 +25,15 @@ public class Robot extends IterativeRobot {
     private AutonManager manager;
     private NTHandler nettab;
     private GearHandler gearHandler;
-    private double debounce;
-    
+    private double debounce, thyme;
+    private boolean lightToggle;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     
     public void robotInit() {
+    	
         driveTrain = new DriveTrain();
         driveTrain.init();
         controller = new JoystickManager();
@@ -44,18 +46,21 @@ public class Robot extends IterativeRobot {
         nettab.init();
         gearHandler = new GearHandler();
         gearHandler.init();
-        double FLmotorCurrent = 0;
+        thyme = 0;
         debounce = -5000;
+        lightToggle = false;
     }
     
     //Dont know if this will work
     public void disabledPeriodic()
-    {
-    	if(controller.getShooterWheelBack() && System.currentTimeMillis() - debounce > 500) 
+    {    	
+    	if(controller.getChangeAuton() && System.currentTimeMillis() - debounce > 500) 
         {
     		debounce = System.currentTimeMillis();
-    		manager.changeMode(controller.getShooterWheelBack());
+    		manager.changeMode(controller.getChangeAuton());
         }
+    	
+    	//controller.rumble(true);
     }
     
 	/**
@@ -84,6 +89,15 @@ public class Robot extends IterativeRobot {
     	controller.update(driveTrain, shooter, nettab, gearHandler);
     	driveTrain.update(controller);
     	shooter.update();
+    	
+    	if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 500) {
+			lightToggle = !lightToggle;
+			thyme = System.currentTimeMillis();
+		}
+		if(lightToggle)
+			gearHandler.setOff();
+    	else
+    		gearHandler.setOn();
     	//nettab.update();
     	//gearHandler.update(driveTrain, nettab);
     	

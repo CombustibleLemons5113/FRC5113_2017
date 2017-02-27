@@ -41,6 +41,7 @@ public class DriveTrain {
 		br = new CANTalon(0);
 		
 		navx = new AHRS(I2C.Port.kOnboard);//idk
+	 	navx.setAngleAdjustment(90.0);
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
@@ -135,12 +136,20 @@ public class DriveTrain {
 		br.set(-backRightSpeed);
 	}
 	
+	public void fod(double x, double y, double rotation, double navX) {
+		roboDrive.mecanumDrive_Cartesian(x, y, rotation, navX);
+	}
+	
 	public double getXVelocity() {
 		return (double)navx.getVelocityX();
 	}
 	
 	public double getYVelocity() {
 		return (double)navx.getVelocityY();
+	}
+	
+	public double getNavAngle() {
+		return navx.getAngle();
 	}
 	
 	/*public double getGyroAngle() {
