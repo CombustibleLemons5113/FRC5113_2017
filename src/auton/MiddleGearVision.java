@@ -1,9 +1,10 @@
 package auton;
 
 import subsystems.DriveTrain;
+import subsystems.NTHandler;
 import subsystems.NTHandler2;
 
-public class MiddleGear extends GearFrame
+public class MiddleGearVision extends GearFrame
 {
 	private int caseSelector = 1;
 	private long time;

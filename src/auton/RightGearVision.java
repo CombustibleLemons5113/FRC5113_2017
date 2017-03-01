@@ -4,7 +4,7 @@ import subsystems.DriveTrain;
 import subsystems.NTHandler;
 import subsystems.NTHandler2;
 
-public class RightGear extends GearFrame
+public class RightGearVision extends GearFrame
 {
 	private int caseSelector = 1;
 	private double time;

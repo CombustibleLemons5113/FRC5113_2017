@@ -2,11 +2,11 @@ package auton;
 
 import subsystems.AutonManager;
 import subsystems.DriveTrain;
-import subsystems.NTHandler;
+import subsystems.NTHandler2;
 
 public abstract class GearFrame
 {
-	public abstract void update(DriveTrain dt);
+	public abstract void update(DriveTrain dt, NTHandler2 nettab);
 	public AutonManager manager;
 	public DriveTrain dt;
 	
