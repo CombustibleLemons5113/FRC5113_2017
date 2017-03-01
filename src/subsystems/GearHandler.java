@@ -14,7 +14,8 @@ public class GearHandler
 	public void init()
 	{
 		zone = 2;
-		lightRelay = new Relay(0);//set 0 to the port number
+		lightRelay = new Relay(0);
+		lightRelay.setDirection(Direction.kBoth);
 	}
 	
 	public void drive(DriveTrain dt, NTHandler nettab)
@@ -35,14 +36,20 @@ public class GearHandler
 			System.out.println("Done!");
 	}
 	
-	public void setOff() {
+	public void set0() {
 		lightRelay.set(Value.kOff);
+	}
+	
+	public void set1() {
+		lightRelay.set(Value.kForward);
+	}
+	
+	public void set2() {
 		lightRelay.set(Value.kReverse);
 	}
 	
-	public void setOn() {
+	public void set3() {
 		lightRelay.set(Value.kOn);
-		lightRelay.set(Value.kForward);
 	}
 	
 	/*public void disabledUpdate()

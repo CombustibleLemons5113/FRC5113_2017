@@ -40,8 +40,10 @@ public class DriveTrain {
 		bl = new CANTalon(15);
 		br = new CANTalon(0);
 		
-		navx = new AHRS(I2C.Port.kOnboard);//idk
-	 	navx.setAngleAdjustment(90.0);
+		navx = new AHRS(I2C.Port.kOnboard);
+		navx.reset();
+		navx.resetDisplacement();
+	 	//navx.setAngleAdjustment(90.0);
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
@@ -79,13 +81,13 @@ public class DriveTrain {
 		
 		roboDrive = new RobotDrive(bl, fl, br, fr);
 		
+		//roboDrive = new RobotDrive(fl, bl, fr, br);
+		
 		/*gyro = new AnalogGyro(0);
 		gyro.initGyro();
 		System.out.println("Gyro is now initiated\t" + gyro.getAngle());
 		
 		gyro.calibrate();*/
-		navx.resetDisplacement(); //sets all displacement values (x,y,z) to zero
-		navx.reset(); //resets Angle
 	}
 	
 	public void update(JoystickManager jm) {
@@ -137,7 +139,7 @@ public class DriveTrain {
 	}
 	
 	public void fod(double x, double y, double rotation, double navX) {
-		roboDrive.mecanumDrive_Cartesian(x, y, rotation, navX);
+		roboDrive.mecanumDrive_Cartesian(rotation, y, x, navX);
 	}
 	
 	public double getXVelocity() {
@@ -147,9 +149,12 @@ public class DriveTrain {
 	public double getYVelocity() {
 		return (double)navx.getVelocityY();
 	}
-	
 	public double getNavAngle() {
 		return navx.getAngle();
+	}
+	
+	public double getNavYaw() {
+		return (double)navx.getYaw();
 	}
 	
 	/*public double getGyroAngle() {

@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
     private NTHandler nettab;
     private GearHandler gearHandler;
     private double debounce, thyme;
-    private boolean lightToggle;
+    private int lightToggle;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
         gearHandler.init();
         thyme = 0;
         debounce = -5000;
-        lightToggle = false;
+        lightToggle = 0;
     }
     
     //Dont know if this will work
@@ -90,14 +90,21 @@ public class Robot extends IterativeRobot {
     	driveTrain.update(controller);
     	shooter.update();
     	
-    	if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 500) {
-			lightToggle = !lightToggle;
+    	if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 250) {
+			++lightToggle;
 			thyme = System.currentTimeMillis();
 		}
-		if(lightToggle)
-			gearHandler.setOff();
-    	else
-    		gearHandler.setOn();
+    	if(lightToggle > 3)
+    		lightToggle = 0;
+    	
+		if(lightToggle == 0)
+			gearHandler.set0();
+    	else if(lightToggle == 1)
+    		gearHandler.set1();
+    	else if(lightToggle == 2)
+    		gearHandler.set0();
+    	else if(lightToggle == 3)
+    		gearHandler.set1();
     	//nettab.update();
     	//gearHandler.update(driveTrain, nettab);
     	

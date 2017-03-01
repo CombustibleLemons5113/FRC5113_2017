@@ -112,18 +112,18 @@ public class JoystickManager
 			if(System.currentTimeMillis() - time3 > 500) {
 				time3 += System.currentTimeMillis();
 				time4 = System.currentTimeMillis();
-				dt.mecanumDrive(Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2)), Math.atan2(0, 0), 0.5);
+				dt.mecanumDrive(Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2)), Math.atan2(0, 0), 1);
 			}
 			else if(System.currentTimeMillis() - time4 > 500) {
 				time4 += System.currentTimeMillis();
 				time3 = System.currentTimeMillis();
-				dt.mecanumDrive(Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2)), Math.atan2(0, 0), -0.5);
+				dt.mecanumDrive(Math.sqrt(Math.pow(0, 2) + Math.pow(0, 2)), Math.atan2(0, 0), -1);
 			}
 		}
 		else {
-			//dt.mecanumDrive(mag, angle, rotation / 2);
-			dt.fod(x, -y, z / 2, dt.getNavAngle());
+			dt.mecanumDrive(mag, angle, rotation / 2);
 		}
+		//dt.fod(x, -y, z / 2, dt.getNavYaw());
 	}
 	
 	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler nettab, GearHandler gearHandler)
@@ -133,7 +133,7 @@ public class JoystickManager
 			t = System.currentTimeMillis();
 		}
 		if(agitatorToggle) {
-			shooter.servo.setAngle(0);
+			shooter.servo.setAngle(180);
 			shooter.shooterWheel.set(-0.85);
 			
 			if(System.currentTimeMillis() - t > 1000) {
@@ -151,7 +151,7 @@ public class JoystickManager
 		}
 		else {
 			shooter.agitator.set(0);
-			shooter.servo.setAngle(180);
+			shooter.servo.setAngle(0);
 			shooter.shooterWheel.set(0);
 		}
 		
