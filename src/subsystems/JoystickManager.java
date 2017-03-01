@@ -134,7 +134,7 @@ public class JoystickManager
 		}
 		if(agitatorToggle) {
 			shooter.servo.setAngle(0);
-			shooter.shooterWheel.set(-0.8);
+			shooter.shooterWheel.set(-0.85);
 			
 			if(System.currentTimeMillis() - t > 1000) {
 				if(System.currentTimeMillis() - time > 2000) {
