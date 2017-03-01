@@ -58,7 +58,7 @@ public class JoystickManager
 		changeLight = new JoystickButton(xboxController, xboxBACK);
 	}
 	
-	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler nettab, GearHandler gearHandler) {
+	public void update(DriveTrain driveTrain, Shooter shooter, NTHandler2 nettab, GearHandler2 gearHandler) {
 		handleJoystickDrive(driveTrain);
 		handleXboxControls(shooter, driveTrain, nettab, gearHandler);
 		//System.out.println("FLE :" + driveTrain.checkFLE() / 360 + "\nFRE :" + driveTrain.checkFRE() / 360 + "\nBLE :" + driveTrain.checkBLE() / 360 + "\nBRE :" + driveTrain.checkBRE() / 360);
@@ -126,7 +126,7 @@ public class JoystickManager
 		}
 	}
 	
-	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler nettab, GearHandler gearHandler)
+	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler2 nettab, GearHandler2 gearHandler)
 	{
 		if(shooterMode.get() && System.currentTimeMillis() - t > 500) {
 			agitatorToggle = !agitatorToggle;
