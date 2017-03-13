@@ -41,8 +41,8 @@ public class DriveTrain {
 		br = new CANTalon(0);
 		
 		navx = new AHRS(I2C.Port.kOnboard);
-		navx.reset();
-		navx.resetDisplacement();
+		//navx.reset();
+		//navx.resetDisplacement();
 	 	//navx.setAngleAdjustment(90.0);
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -79,9 +79,9 @@ public class DriveTrain {
 		
 		startTime = System.currentTimeMillis();
 		
-		roboDrive = new RobotDrive(bl, fl, br, fr);
+		//roboDrive = new RobotDrive(bl, fl, br, fr);
 		
-		//roboDrive = new RobotDrive(fl, bl, fr, br);
+		roboDrive = new RobotDrive(fl, bl, fr, br);
 		
 		/*gyro = new AnalogGyro(0);
 		gyro.initGyro();
@@ -133,13 +133,25 @@ public class DriveTrain {
 			backRightSpeed = -0.99;
 		
 		fl.set(frontLeftSpeed);
-		fr.set(-frontRightSpeed);
+		fr.set(frontRightSpeed);
 		bl.set(backLeftSpeed);
-		br.set(-backRightSpeed);
+		br.set(backRightSpeed);
 	}
 	
 	public void fod(double x, double y, double rotation, double navX) {
-		roboDrive.mecanumDrive_Cartesian(rotation, y, x, navX);
+		//roboDrive.mecanumDrive_Cartesian(x, rotation, y, navX);
+		roboDrive.mecanumDrive_Cartesian(x, y, rotation, navX);
+	}
+	
+	public void tankDrive(double leftValue, double rightValue)
+	{	
+		double leftPower = leftValue;
+		double rightPower = rightValue;
+		
+		fl.set(leftPower);
+		bl.set(leftPower);
+		fr.set(rightPower);
+		br.set(rightPower);
 	}
 	
 	public double getXVelocity() {

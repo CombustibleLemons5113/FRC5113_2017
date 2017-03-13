@@ -7,36 +7,51 @@ import subsystems.NTHandler2;
 public class MiddleGearVision extends GearFrame
 {
 	private int caseSelector = 1;
-	private long time;
-	private double desiredDistance = 1;
-	private double mag = Math.sqrt(Math.pow(-0.5, 2) + Math.pow(0, 2));
-	private double angle = Math.atan2(0, -0.5);
-	private double rotation = 0;
 	
 	public void update(DriveTrain dt, NTHandler2 nettab)
 	{
+		int distance = nettab.getDistance();
+		int mode = nettab.getMode();
+		
 		switch(caseSelector)
 		{
 		case 1:
-			drive(mag, angle, rotation);
-			time = System.currentTimeMillis();
-			caseSelector = 2;
+			System.out.println("Driving forward - middle");
+			dt.mecanumDrive(0.8, -90 * Math.PI / 180, 0);
 			
+			if(nettab.getZone() == 1 || nettab.getZone() == 2 || nettab.getZone() == 3)
+				caseSelector++;
 			break;
-			
 		case 2:
-			//System.out.println("Time :" + (time / 1000) + "\nVelocity :" + manager.navx.getVelocityX() + "\nDistance :" + distance(time));
-			if((Math.abs(dt.getYVelocity())) * ((double)(System.currentTimeMillis() - time) / 1000.0) >= (desiredDistance * 0.95) && (Math.abs(dt.getYVelocity())) * ((double)(System.currentTimeMillis() - time) / 1000.0) <= (desiredDistance * 1.05))
-				caseSelector = 3;
-			System.out.println("X: " + dt.getXVelocity() + "/nY :" + dt.getYVelocity() + "/nDistance :" + (Math.abs(dt.getYVelocity())) * ((double)(System.currentTimeMillis() - time) / 1000.0));
-			break;
-		
-		case 3:
-			drive(0, 0, 0);
-			System.out.println("Done!");
+			System.out.println("Driving to peg - coarse");
+			if(nettab.getZone() == 1)
+				dt.mecanumDrive(0.3, 20 * Math.PI / 180, .2);
+			else if(nettab.getZone() == 2)
+				dt.mecanumDrive(0.3, 0 * Math.PI / 180, 0);
+			else if(nettab.getZone() == 3)
+				dt.mecanumDrive(0.3, 340 * Math.PI / 180, -.2);
 			
+			if(mode == 2)
+				caseSelector++;
+			
+			break;
+		case 3:
+			System.out.println("Driving to peg - fine");
+			if(nettab.getZone() == 1)
+				dt.mecanumDrive(0.3, 20, 0);
+			else if(nettab.getZone() == 2)
+				dt.mecanumDrive(0.3, 0, 0);
+			else if(nettab.getZone() == 1)
+				dt.mecanumDrive(0.3, 340, 0);
+			
+			if(distance < 16)
+				caseSelector++;
+			
+			break;
+		case 4:
+			dt.mecanumDrive(0, 0, 0);
+			System.out.println("Done!");
 			break;
 		}
-		dt.mecanumDrive(m, a, r);
 	}
 }

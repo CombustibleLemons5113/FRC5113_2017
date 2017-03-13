@@ -7,36 +7,49 @@ import edu.wpi.first.wpilibj.Relay.Value;
 
 public class GearHandler
 {
-	public Relay lightRelay;
-	private int zone;
+	//public Relay lightRelay;
+	private int zone, mode;
 	private boolean lightOn;
 	
 	public void init()
 	{
 		zone = 2;
-		lightRelay = new Relay(0);
-		lightRelay.setDirection(Direction.kBoth);
+		mode = -1;
+		//lightRelay = new Relay(0);
+		//lightRelay.setDirection(Direction.kBoth);
 	}
 	
-	public void drive(DriveTrain dt, NTHandler nettab)
+	public void drive(DriveTrain dt, NTHandler2 nettab)
 	{
 		zone = nettab.getZone();
-		System.out.println(zone + "\t" + nettab.getArea());
+		mode = nettab.getMode();
 		
-		if(nettab.getArea() < 20000)
+		if(nettab.getDistance() < 16)
 		{
-			if(zone == 1)
-				dt.mecanumDrive(0.2, 170 * Math.PI / 180, -0.2);
-			else if(zone == 2)
-				dt.mecanumDrive(0.2, 180 * Math.PI / 180, 0);
-			else if(zone == 3)
-				dt.mecanumDrive(0.2, 190 * Math.PI / 180, 0.2);
+			dt.mecanumDrive(0, 0, 0);
+			System.out.println("Robot should be in place.");
 		}
-		else
-			System.out.println("Done!");
+		else if(mode == 1)
+		{
+			if(nettab.getZone() == 1)
+				dt.mecanumDrive(0.3, 20 * Math.PI / 180, .2);
+			else if(nettab.getZone() == 2)
+				dt.mecanumDrive(0.3, 0 * Math.PI / 180, 0);
+			else if(nettab.getZone() == 3)
+				dt.mecanumDrive(0.3, 340 * Math.PI / 180, -.2);
+		}
+		else if(mode == 2)
+		{
+			if(nettab.getZone() == 1)
+				dt.mecanumDrive(0.3, 20, 0);
+			else if(nettab.getZone() == 2)
+				dt.mecanumDrive(0.3, 0, 0);
+			else if(nettab.getZone() == 1)
+				dt.mecanumDrive(0.3, 340, 0);
+		}
 	}
 	
-	public void set0() {
+	/*public void set0() {
 		lightRelay.set(Value.kOff);
 	}
 	
@@ -50,7 +63,7 @@ public class GearHandler
 	
 	public void set3() {
 		lightRelay.set(Value.kOn);
-	}
+	}*/
 	
 	/*public void disabledUpdate()
 	{

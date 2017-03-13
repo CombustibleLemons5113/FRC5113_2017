@@ -108,7 +108,7 @@ public class JoystickManager
 		//System.out.println(gyroAngle);
 		//System.out.println((angle / Math.PI) * 180);
 		//System.out.println("Mag: " + mag + "\nAngle: " + angle + "\nRotation: " + rotation);
-		if(rustleMyJimmies.get()) {
+		/*if(rustleMyJimmies.get()) {
 			if(System.currentTimeMillis() - time3 > 500) {
 				time3 += System.currentTimeMillis();
 				time4 = System.currentTimeMillis();
@@ -122,8 +122,10 @@ public class JoystickManager
 		}
 		else {
 			dt.mecanumDrive(mag, angle, rotation / 2);
-		}
-		//dt.fod(x, -y, z / 2, dt.getNavYaw());
+		}*/
+		System.out.println(dt.getNavAngle());
+		dt.fod(x, y, z / 2, dt.getNavAngle());
+		//dt.tankDrive(leftValue, rightValue);
 	}
 	
 	public void handleXboxControls(Shooter shooter, DriveTrain dt, NTHandler2 nettab, GearHandler2 gearHandler)
@@ -186,24 +188,24 @@ public class JoystickManager
 		System.out.println("Boi: " + xboxController.getRawAxis(3));*/
 		if(intakeIn.get()) {
 			shooter.intake.set(0.99);
-			rumble(true);
+			//rumble(true);
 		}
 		else if(intakeOut.get()) {
 			shooter.intake.set(-0.99);
-			rumble(true);
+			//rumble(true);
 		}
 		else {
 			shooter.intake.set(0);
-			rumble(false);
+			//rumble(false);
 		}
 	}
 	
 	public double getXAxis() {
-		return -joystick.getX();
+		return joystick.getX();
 	}
 	
 	public double getYAxis() {
-		return -joystick.getY();
+		return joystick.getY();
 	}
 	
 	public double getZAxis() {

@@ -4,13 +4,13 @@ import subsystems.DriveTrain;
 import subsystems.NTHandler;
 import subsystems.NTHandler2;
 
-public class MiddleGear extends GearFrame
+public class Forward extends GearFrame
 {
 	private int caseSelector = 1;
 	private double time;
-	private double mag = Math.sqrt(Math.pow(-0.5, 2) + Math.pow(-0.05, 2));
-	private double angle = Math.atan2(-0.05, -0.5);
-	private double rotation = .04;
+	private double mag = Math.sqrt(Math.pow(0, 2) + Math.pow(0.75, 2));
+	private double angle = Math.atan2(0.75, 0);
+	private double rotation = 0;
 	
 	public void update(DriveTrain dt, NTHandler2 nettab)
 	{
@@ -24,7 +24,7 @@ public class MiddleGear extends GearFrame
 			break;
 			
 		case 2:
-			if(System.currentTimeMillis() - time > 6000)
+			if(System.currentTimeMillis() - time > 4000)
 				caseSelector = 3;
 			
 			break;

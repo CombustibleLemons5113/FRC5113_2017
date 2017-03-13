@@ -8,6 +8,7 @@ import subsystems.JoystickManager;
 import subsystems.NTHandler;
 import subsystems.NTHandler2;
 import subsystems.Shooter;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 
@@ -56,6 +57,9 @@ public class Robot extends IterativeRobot {
         thyme = 0;
         debounce = -5000;
         lightToggle = 0;
+        
+        CameraServer.getInstance().startAutomaticCapture(0);
+        CameraServer.getInstance().startAutomaticCapture(1);
     }
     
     //Dont know if this will work
@@ -97,21 +101,21 @@ public class Robot extends IterativeRobot {
     	driveTrain.update(controller);
     	shooter.update();
     	
-    	if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 250) {
+    	/*if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 250) {
 			++lightToggle;
 			thyme = System.currentTimeMillis();
 		}
     	if(lightToggle > 3)
-    		lightToggle = 0;
+    		lightToggle = 0;*/
     	
-		if(lightToggle == 0)
+		/*if(lightToggle == 0)
 			gearHandler.set0();
     	else if(lightToggle == 1)
     		gearHandler.set1();
     	else if(lightToggle == 2)
     		gearHandler.set0();
     	else if(lightToggle == 3)
-    		gearHandler.set1();
+    		gearHandler.set1();*/
     	//nettab.update();
     	//gearHandler.update(driveTrain, nettab);
     	

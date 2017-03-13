@@ -16,30 +16,33 @@ public class LeftGearVision extends GearFrame
 		switch(caseSelector)
 		{
 		case 1:
+			System.out.println("Driving forward");
 			dt.mecanumDrive(0.5, 90 * Math.PI / 180, 0);
 			
-			if(nettab.getZone() == 3)
+			if(nettab.getZone() == 2 || nettab.getZone() == 3)
 				caseSelector++;
 			break;
 		case 2:
+			System.out.println("Driving to peg - coarse");
 			if(nettab.getZone() == 1)
-				dt.mecanumDrive(0.3, 100 * Math.PI / 180, .2);
+				dt.mecanumDrive(0.3, 20 * Math.PI / 180, .2);
 			else if(nettab.getZone() == 2)
-				dt.mecanumDrive(0.3, 90 * Math.PI / 180, 0);
+				dt.mecanumDrive(0.3, 0 * Math.PI / 180, 0);
 			else if(nettab.getZone() == 3)
-				dt.mecanumDrive(0.3, 80 * Math.PI / 180, -.2);
+				dt.mecanumDrive(0.3, 340 * Math.PI / 180, -.2);
 			
 			if(mode == 2)
 				caseSelector++;
 			
 			break;
 		case 3:
+			System.out.println("Driving to peg - fine");
 			if(nettab.getZone() == 1)
-				dt.mecanumDrive(0.3, 90, 0);
+				dt.mecanumDrive(0.3, 20, 0);
 			else if(nettab.getZone() == 2)
 				dt.mecanumDrive(0.3, 0, 0);
 			else if(nettab.getZone() == 1)
-				dt.mecanumDrive(0.3, 270, 0);
+				dt.mecanumDrive(0.3, 340, 0);
 			
 			if(distance < 16)
 				caseSelector++;

@@ -2,6 +2,7 @@ package subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import auton.Forward;
 import auton.LeftGear;
 import auton.LeftGearVision;
 import auton.MiddleGear;
@@ -23,6 +24,7 @@ public class AutonManager
 	LeftGearVision leftGearVision;
 	MiddleGearVision middleGearVision;
 	RightGearVision rightGearVision;
+	Forward forward;
 	
 	public void init()
 	{
@@ -32,6 +34,7 @@ public class AutonManager
 		leftGearVision = new LeftGearVision();
 		middleGearVision = new MiddleGearVision();
 		rightGearVision = new RightGearVision();
+		forward = new Forward();
 	}
 	
 	public void update(DriveTrain dt, NTHandler2 nettab)
@@ -48,13 +51,15 @@ public class AutonManager
 			middleGearVision.update(dt, nettab);
 		else if(caseSelector == 6)
 			rightGearVision.update(dt, nettab);
+		else if(caseSelector == 7)
+			forward.update(dt, nettab);
 	}
 	
 	public void changeMode(boolean switchMode)
 	{
 		if(switchMode)
 		{
-			if(caseSelector == 6)
+			if(caseSelector == 7)
 				caseSelector = 1;
 			else
 				caseSelector++;
@@ -72,6 +77,8 @@ public class AutonManager
 			autoName = "Middle Gear Vision";
 		else if(caseSelector == 6)
 			autoName = "Right Gear Vision";
+		else if(caseSelector == 7)
+			autoName = "Forward";
 		
 		SmartDashboard.putString("Auto Mode", autoName);
 	}
