@@ -138,6 +138,14 @@ public class DriveTrain {
 		br.set(backRightSpeed);
 	}
 	
+	public void mecanumDrive2(double mag, double angle, double rotation)
+	{
+		double x = mag * Math.cos(angle);
+		double y = mag * Math.sin(angle);
+
+		roboDrive.mecanumDrive_Cartesian(x, y, rotation, navx.getAngle());
+	}
+	
 	public void fod(double x, double y, double rotation, double navX) {
 		//roboDrive.mecanumDrive_Cartesian(x, rotation, y, navX);
 		roboDrive.mecanumDrive_Cartesian(x, y, rotation, navX);
