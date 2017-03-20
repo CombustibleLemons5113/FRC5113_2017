@@ -41,8 +41,8 @@ public class DriveTrain {
 		br = new CANTalon(0);
 		
 		navx = new AHRS(I2C.Port.kOnboard);
-		//navx.reset();
-		//navx.resetDisplacement();
+		navx.reset();
+		navx.resetDisplacement();
 	 	//navx.setAngleAdjustment(90.0);
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -154,20 +154,14 @@ public class DriveTrain {
 		br.set(rightPower);
 	}
 	
-	public double getXVelocity() {
-		return (double)navx.getVelocityX();
-	}
-	
-	public double getYVelocity() {
-		return (double)navx.getVelocityY();
-	}
-	public double getNavAngle() {
-		return navx.getAngle();
-	}
-	
-	public double getNavYaw() {
-		return (double)navx.getYaw();
-	}
+	 public double[] rotateV(double x, double y, double angle) {
+		    double cosA = Math.cos(angle * (Math.PI / 180.0));
+		    double sinA = Math.sin(angle * (Math.PI / 180.0));
+		    double[] out = new double[2];
+		    out[0] = x * cosA - y * sinA;
+		    out[1] = x * sinA + y * cosA;
+		    return out;
+		  }
 	
 	/*public double getGyroAngle() {
 		return gyro.getAngle();

@@ -71,6 +71,7 @@ public class Robot extends IterativeRobot {
     		manager.changeMode(controller.getChangeAuton());
         }
     	
+    	//shooter.climber.enableBrakeMode(true);
     	//controller.rumble(true);
     }
     

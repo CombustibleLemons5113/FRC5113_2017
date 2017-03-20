@@ -11,7 +11,7 @@ public class JoystickManager
 	private Joystick joystick;
 	private Joystick xboxController;
 	
-	private double mag, angle, rotation, gyroAngle;
+	private double mag, angle, rotation, x, y, z;
 	private long time, time2, t, time3, time4;
 	private boolean agitatorToggle;
 	
@@ -19,6 +19,7 @@ public class JoystickManager
 	private JoystickButton shooterMode;
 	private JoystickButton rustleMyJimmies;
 	private JoystickButton intakeIn, intakeOut;
+	private JoystickButton climb, stay;
 	private JoystickButton gearDrive;
 	private JoystickButton changeAuton, changeLight;
 	
@@ -51,7 +52,9 @@ public class JoystickManager
 		shooterMode = new JoystickButton(xboxController, xboxB);
 		intakeIn = new JoystickButton(xboxController, xboxA);
 		intakeOut = new JoystickButton(xboxController, xboxX);
-		gearDrive = new JoystickButton(xboxController, xboxRB);
+		climb = new JoystickButton(xboxController, xboxY);
+		stay = new JoystickButton(xboxController, xboxRB);
+		gearDrive = new JoystickButton(xboxController, xboxLB);
 		shooterSpeed = 0;
 		speedThresehold = 0; //change to the desired speed once determined
 		changeAuton = new JoystickButton(xboxController, xboxSTART);
@@ -69,9 +72,9 @@ public class JoystickManager
 	
 	private void handleJoystickDrive(DriveTrain dt)
 	{
-		double x = getXAxis();
-		double y = getYAxis();
-		double z = getZAxis();
+		x = getXAxis();
+		y = getYAxis();
+		z = getZAxis();
 		
 		if (x > 0.99)
 			x = 0.99;
@@ -101,6 +104,10 @@ public class JoystickManager
 		else if (z <= -0.4)
 			z = z + 0.4;
 		
+		double[] rotated = dt.rotateV(x, y, dt.navx.getAngle());
+	    x = rotated[0];
+	    y = rotated[1];
+		
 		mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		angle = Math.atan2(y, x);
 		rotation = z;
@@ -123,8 +130,9 @@ public class JoystickManager
 		else {
 			dt.mecanumDrive(mag, angle, rotation / 2);
 		}*/
-		System.out.println(dt.getNavAngle());
-		dt.fod(x, y, z / 2, dt.getNavAngle());
+		System.out.println(dt.navx.getAngle());
+		System.out.println(dt.navx.isCalibrating());
+		dt.fod(x, y, z / 2, dt.navx.getAngle());
 		//dt.tankDrive(leftValue, rightValue);
 	}
 	
@@ -156,6 +164,21 @@ public class JoystickManager
 			shooter.servo.setAngle(0);
 			shooter.shooterWheel.set(0);
 		}
+		
+		if(climb.get()) {
+			shooter.climber.enableBrakeMode(true);
+			shooter.climber.set(0.5);//Needs to be tested
+		}
+		else if(stay.get()) {
+			shooter.climber.enableBrakeMode(true);
+			shooter.climber.set(0.2);//Needs to be tested
+		}
+		else {
+			shooter.climber.enableBrakeMode(true);
+			shooter.climber.set(0);
+		}
+		
+		//shooter.climber.enableBrakeMode(true);
 		
 		/*if(shooterWheel.get()){
 			System.out.println("Not a Software Problem");//"Yeah, it's a software problem." -zbross 2017 (It wasn't a software problem)
