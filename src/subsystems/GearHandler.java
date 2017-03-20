@@ -19,7 +19,7 @@ public class GearHandler
 		//lightRelay.setDirection(Direction.kBoth);
 	}
 	
-	public void drive(DriveTrain dt, NTHandler2 nettab)
+	public void drive(DriveTrain dt, NTHandler nettab)
 	{
 		zone = nettab.getZone();
 		mode = nettab.getMode();

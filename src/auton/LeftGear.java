@@ -1,7 +1,7 @@
 package auton;
 
 import subsystems.DriveTrain;
-import subsystems.NTHandler2;
+import subsystems.NTHandler;
 
 public class LeftGear extends GearFrame
 {
@@ -11,7 +11,7 @@ public class LeftGear extends GearFrame
 	private double angle = Math.atan2(0, 0.5);
 	private double rotation = 0;
 	
-	public void update(DriveTrain dt, NTHandler2 nettab)
+	public void update(DriveTrain dt, NTHandler nettab)
 	{
 		/*switch(caseSelector)
 		{

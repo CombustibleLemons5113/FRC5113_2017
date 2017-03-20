@@ -2,13 +2,12 @@ package auton;
 
 import subsystems.DriveTrain;
 import subsystems.NTHandler;
-import subsystems.NTHandler2;
 
 public class MiddleGearVision extends GearFrame
 {
 	private int caseSelector = 1;
 	
-	public void update(DriveTrain dt, NTHandler2 nettab)
+	public void update(DriveTrain dt, NTHandler nettab)
 	{
 		int distance = nettab.getDistance();
 		int mode = nettab.getMode();
@@ -17,7 +16,7 @@ public class MiddleGearVision extends GearFrame
 		{
 		case 1:
 			System.out.println("Driving forward - middle");
-			dt.mecanumDrive(0.8, -90 * Math.PI / 180, 0);
+			dt.mecanumDrive(0.8, 0, 0);
 			
 			if(nettab.getZone() == 1 || nettab.getZone() == 2 || nettab.getZone() == 3)
 				caseSelector++;
@@ -25,11 +24,11 @@ public class MiddleGearVision extends GearFrame
 		case 2:
 			System.out.println("Driving to peg - coarse");
 			if(nettab.getZone() == 1)
-				dt.mecanumDrive(0.3, 20 * Math.PI / 180, .2);
+				dt.mecanumDrive(0.3, 20, .2);
 			else if(nettab.getZone() == 2)
-				dt.mecanumDrive(0.3, 0 * Math.PI / 180, 0);
+				dt.mecanumDrive(0.3, 0, 0);
 			else if(nettab.getZone() == 3)
-				dt.mecanumDrive(0.3, 340 * Math.PI / 180, -.2);
+				dt.mecanumDrive(0.3, 340, -.2);
 			
 			if(mode == 2)
 				caseSelector++;

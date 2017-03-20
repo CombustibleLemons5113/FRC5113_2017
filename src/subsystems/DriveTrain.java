@@ -140,10 +140,10 @@ public class DriveTrain {
 	
 	public void mecanumDrive2(double mag, double angle, double rotation)
 	{
-		double x = mag * Math.cos(angle);
-		double y = mag * Math.sin(angle);
+		double x = mag * Math.cos(angle * Math.PI / 180);
+		double y = mag * Math.sin(angle * Math.PI / 180);
 
-		roboDrive.mecanumDrive_Cartesian(x, y, rotation, navx.getAngle());
+		roboDrive.mecanumDrive_Polar(x, y, rotation);
 	}
 	
 	public void fod(double x, double y, double rotation, double navX) {
