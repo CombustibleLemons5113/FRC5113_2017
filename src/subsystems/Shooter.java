@@ -5,6 +5,7 @@ import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter
 {
@@ -13,7 +14,7 @@ public class Shooter
 	public CANTalon shooterWheel;
 	public CANTalon intake;
 	public CANTalon agitator;
-	private double shooterSpeed;
+	public CANTalon climber;
 	private double voltage, range;
 	
 	private AnalogInput usrf;
@@ -23,7 +24,8 @@ public class Shooter
 		servo = new Servo(0);
 		intake = new CANTalon(5);
 		agitator = new CANTalon(10);
-		shooterWheel = new CANTalon(11);
+		shooterWheel = new CANTalon(11);//should be 11
+		climber = new CANTalon(12);//needs to be changed
 		shooterWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		//shooterSpeed = 0;
         shooterWheel.reverseSensor(false);
@@ -36,24 +38,12 @@ public class Shooter
         usrf = new AnalogInput(0);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void update()
 	{
-		//shooterSpeed = shooterWheel.getSpeed();
-		//System.out.println("Current Speed: "+ shooterSpeed);
-		
-		/*if(Math.abs(shooterSpeed)<speedThresehold*.9 && (!isStart)){
-			startTime = System.currentTimeMillis();
-			isStart = true;
-		}
-		else if((Math.abs(shooterSpeed)>speedThresehold*.9) && (Math.abs(shooterSpeed)<speedThresehold*.98)){
-			endTime = System.currentTimeMillis();
-			System.out.println("change: "+ (endTime-startTime));
-			isStart = false;
-		}
-		*/
-		//speedThresehold = (speedThresehold + shooterSpeed)/2.0;
-			
+		SmartDashboard.putDouble("Distance: ", getDistanceMeters());
 	}
+	
 	public double getDistanceMeters()
 	{
 		voltage = usrf.getVoltage();
