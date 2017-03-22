@@ -34,6 +34,7 @@ public class AutonManager
 		leftGearVision = new LeftGearVision();
 		middleGearVision = new MiddleGearVision();
 		rightGearVision = new RightGearVision();
+		rightGearVision.init();
 		forward = new Forward();
 	}
 	

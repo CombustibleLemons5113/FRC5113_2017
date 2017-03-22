@@ -23,29 +23,36 @@ public class GearHandler
 	{
 		zone = nettab.getZone();
 		mode = nettab.getMode();
+		double angle = dt.navx.getAngle();
 		
-		if(nettab.getDistance() < 16)
+		if(mode == -1)
+		{
+			System.out.println("Teleop auton is not currently available!");
+		}
+		else if(nettab.getDistance() < 16)
 		{
 			dt.mecanumDrive(0, 0, 0);
 			System.out.println("Robot should be in place.");
 		}
 		else if(mode == 1)
 		{
-			if(nettab.getZone() == 1)
-				dt.mecanumDrive(0.3, 20 * Math.PI / 180, .2);
+			System.out.println("Driving to peg - coarse");
+			if(nettab.getZone() == 3)
+				dt.mecanumDrive2(0.15, 60, 0.5, angle);
 			else if(nettab.getZone() == 2)
-				dt.mecanumDrive(0.3, 0 * Math.PI / 180, 0);
-			else if(nettab.getZone() == 3)
-				dt.mecanumDrive(0.3, 340 * Math.PI / 180, -.2);
+				dt.mecanumDrive2(0.15, 0, 0, angle);
+			else if(nettab.getZone() == 1)
+				dt.mecanumDrive2(0.15, 300, -0.5, angle);
 		}
 		else if(mode == 2)
 		{
-			if(nettab.getZone() == 1)
-				dt.mecanumDrive(0.3, 20, 0);
+			System.out.println("Driving to peg - fine");
+			if(nettab.getZone() == 3)
+				dt.mecanumDrive2(0.1, 90, 0, angle);
 			else if(nettab.getZone() == 2)
-				dt.mecanumDrive(0.3, 0, 0);
+				dt.mecanumDrive2(0.1, 0, 0, angle);
 			else if(nettab.getZone() == 1)
-				dt.mecanumDrive(0.3, 340, 0);
+				dt.mecanumDrive2(0.1, 270, 0, angle);
 		}
 	}
 	

@@ -94,6 +94,8 @@ public class Robot extends IterativeRobot {
     	controller.update(driveTrain, shooter, nettab, gearHandler);
     	driveTrain.update(controller);
     	shooter.update();
+    	nettab.update();
+    	gearHandler.drive(driveTrain, nettab);
     	
     	/*if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 250) {
 			++lightToggle;
@@ -110,11 +112,10 @@ public class Robot extends IterativeRobot {
     		gearHandler.set0();
     	else if(lightToggle == 3)
     		gearHandler.set1();*/
-    	nettab.update();
-    	nettab.print();
-    	gearHandler.drive(driveTrain, nettab);
     	
 		//System.out.println("FL Speed: " + driveTrain.fl.getSpeed());
+    	
+    	nettab.print();
     	System.out.println("------------------------");
     }
     
