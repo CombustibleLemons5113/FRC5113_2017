@@ -3,10 +3,8 @@ package org.usfirst.frc.team5113.robot;
 import subsystems.AutonManager;
 import subsystems.DriveTrain;
 import subsystems.GearHandler;
-import subsystems.GearHandler2;
 import subsystems.JoystickManager;
 import subsystems.NTHandler;
-import subsystems.NTHandler2;
 import subsystems.Shooter;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -25,10 +23,8 @@ public class Robot extends IterativeRobot {
     private JoystickManager controller;
     private Shooter shooter;
     private AutonManager manager;
-    //private NTHandler nettab;
     private GearHandler gearHandler;
-    private NTHandler2 nettab2;
-    private GearHandler2 gearHandler2;
+    private NTHandler nettab;
     private double debounce, thyme;
     private int lightToggle;
     /**
@@ -46,14 +42,10 @@ public class Robot extends IterativeRobot {
         shooter.init();
         manager = new AutonManager();
         manager.init();
-        //nettab = new NTHandler();
-        //nettab.init();
         gearHandler = new GearHandler();
         gearHandler.init();
-        nettab2 = new NTHandler2();
-        nettab2.init();
-        gearHandler2 = new GearHandler2();
-        gearHandler2.init();
+        nettab = new NTHandler();
+        nettab.init();
         thyme = 0;
         debounce = -5000;
         lightToggle = 0;
@@ -91,16 +83,19 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	manager.update(driveTrain, nettab2);
+    	manager.update(driveTrain, nettab);
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	controller.update(driveTrain, shooter, nettab2, gearHandler2);
+    	System.out.println("Enabled");
+    	controller.update(driveTrain, shooter, nettab, gearHandler);
     	driveTrain.update(controller);
     	shooter.update();
+    	nettab.update();
+    	gearHandler.drive(driveTrain, nettab);
     	
     	/*if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 250) {
 			++lightToggle;
@@ -117,10 +112,11 @@ public class Robot extends IterativeRobot {
     		gearHandler.set0();
     	else if(lightToggle == 3)
     		gearHandler.set1();*/
-    	//nettab.update();
-    	//gearHandler.update(driveTrain, nettab);
     	
 		//System.out.println("FL Speed: " + driveTrain.fl.getSpeed());
+    	
+    	nettab.print();
+    	System.out.println("------------------------");
     }
     
     /**

@@ -34,10 +34,11 @@ public class AutonManager
 		leftGearVision = new LeftGearVision();
 		middleGearVision = new MiddleGearVision();
 		rightGearVision = new RightGearVision();
+		rightGearVision.init();
 		forward = new Forward();
 	}
 	
-	public void update(DriveTrain dt, NTHandler2 nettab)
+	public void update(DriveTrain dt, NTHandler nettab)
 	{
 		if(caseSelector == 1)
 			leftGear.update(dt, nettab);

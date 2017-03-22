@@ -2,34 +2,46 @@ package auton;
 
 import subsystems.DriveTrain;
 import subsystems.NTHandler;
-import subsystems.NTHandler2;
 
 public class RightGearVision extends GearFrame
 {
+	private final double MODE_1_SPEED = 0.2;
+	private final double MODE_2_SPEED = 0.2;
+	private final double MODE_3_SPEED = 0.1;
+	
 	private int caseSelector = 1;
 	
-	public void update(DriveTrain dt, NTHandler2 nettab)
+	public void init()
 	{
+		caseSelector = 1;
+	}
+	
+	public void update(DriveTrain dt, NTHandler nettab)
+	{
+		nettab.update();
 		int distance = nettab.getDistance();
 		int mode = nettab.getMode();
+		int zone = nettab.getZone();
+		double angle = dt.navx.getAngle();
+		nettab.print();
 		
 		switch(caseSelector)
 		{
 		case 1:
 			System.out.println("Driving forward");
-			dt.mecanumDrive2(0.5, 270 * Math.PI / 180, 0);
+			dt.mecanumDrive2(MODE_1_SPEED, 90, 0, angle);
 			
-			if(nettab.getZone() == 1 || nettab.getZone() == 2 || nettab.getZone() == 3)
+			if(zone == 1 || zone == 2 || zone == 3)
 				caseSelector++;
 			break;
 		case 2:
 			System.out.println("Driving to peg - coarse");
-			if(nettab.getZone() == 1)
-				dt.mecanumDrive2(0.3, 20 * Math.PI / 180, .2);
-			else if(nettab.getZone() == 2)
-				dt.mecanumDrive2(0.3, 0 * Math.PI / 180, 0);
-			else if(nettab.getZone() == 3)
-				dt.mecanumDrive2(0.3, 340 * Math.PI / 180, -.2);
+			if(zone == 3)
+				dt.mecanumDrive2(MODE_2_SPEED, 40, .3, angle);
+			else if(zone == 2)
+				dt.mecanumDrive2(MODE_2_SPEED, 0, 0, angle);
+			else if(zone == 1)
+				dt.mecanumDrive2(MODE_2_SPEED, 320, -.3, angle);
 			
 			if(mode == 2)
 				caseSelector++;
@@ -37,19 +49,19 @@ public class RightGearVision extends GearFrame
 			break;
 		case 3:
 			System.out.println("Driving to peg - fine");
-			if(nettab.getZone() == 1)
-				dt.mecanumDrive2(0.3, 20, 0);
-			else if(nettab.getZone() == 2)
-				dt.mecanumDrive2(0.3, 0, 0);
-			else if(nettab.getZone() == 1)
-				dt.mecanumDrive2(0.3, 340, 0);
+			if(zone == 3)
+				dt.mecanumDrive2(MODE_3_SPEED, 90, 0, angle);
+			else if(zone == 2)
+				dt.mecanumDrive2(MODE_3_SPEED, 0, 0, angle);
+			else if(zone == 1)
+				dt.mecanumDrive2(MODE_3_SPEED, 270, 0, angle);
 			
 			if(distance < 16)
 				caseSelector++;
 			
 			break;
 		case 4:
-			dt.mecanumDrive2(0, 0, 0);
+			dt.mecanumDrive2(0, 0, 0, angle);
 			System.out.println("Done!");
 			break;
 		}

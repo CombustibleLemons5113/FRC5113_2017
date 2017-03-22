@@ -2,7 +2,6 @@ package auton;
 
 import subsystems.DriveTrain;
 import subsystems.NTHandler;
-import subsystems.NTHandler2;
 
 public class MiddleGear extends GearFrame
 {
@@ -12,7 +11,7 @@ public class MiddleGear extends GearFrame
 	private double angle = Math.atan2(-0.05, -0.5);
 	private double rotation = .04;
 	
-	public void update(DriveTrain dt, NTHandler2 nettab)
+	public void update(DriveTrain dt, NTHandler nettab)
 	{
 		switch(caseSelector)
 		{
