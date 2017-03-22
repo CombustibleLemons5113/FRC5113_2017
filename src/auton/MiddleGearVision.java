@@ -19,7 +19,7 @@ public class MiddleGearVision extends GearFrame
 		{
 		case 1:
 			System.out.println("Driving forward - middle");
-			dt.mecanumDrive2(0.3, 0, 0, angle);
+			dt.mecanumDrive2(0.5, 0, 0, angle);
 			
 			if(nettab.getZone() == 1 || nettab.getZone() == 2 || nettab.getZone() == 3)
 				caseSelector++;
