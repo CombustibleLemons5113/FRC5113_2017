@@ -40,7 +40,7 @@ public class DriveTrain {
 		bl = new CANTalon(15);
 		br = new CANTalon(0);
 		
-		navx = new AHRS(I2C.Port.kOnboard);
+		navx = new AHRS(I2C.Port.kMXP);
 		navx.reset();
 		navx.resetDisplacement();
 	 	//navx.setAngleAdjustment(90.0);

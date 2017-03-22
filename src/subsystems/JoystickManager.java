@@ -166,15 +166,12 @@ public class JoystickManager
 		}
 		
 		if(climb.get()) {
-			shooter.climber.enableBrakeMode(true);
-			shooter.climber.set(0.5);//Needs to be tested
+			shooter.climber.set(0.6);//Needs to be tested
 		}
 		else if(stay.get()) {
-			shooter.climber.enableBrakeMode(true);
-			shooter.climber.set(0.2);//Needs to be tested
+			shooter.climber.set(0.4);//Needs to be tested
 		}
 		else {
-			shooter.climber.enableBrakeMode(true);
 			shooter.climber.set(0);
 		}
 		
