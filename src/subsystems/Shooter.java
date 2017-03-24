@@ -25,7 +25,7 @@ public class Shooter
 		intake = new CANTalon(5);
 		agitator = new CANTalon(10);
 		shooterWheel = new CANTalon(11);//should be 11
-		climber = new CANTalon(12);//needs to be changed
+		climber = new CANTalon(4);
 		climber.enableBrakeMode(true);
 		shooterWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		//shooterSpeed = 0;

@@ -132,7 +132,7 @@ public class JoystickManager
 		}*/
 		System.out.println(dt.navx.getAngle());
 		System.out.println(dt.navx.isCalibrating());
-		dt.fod(x, y, z / 2, dt.navx.getAngle());
+		dt.fod(x, y, z/2, dt.navx.getAngle());
 		//dt.tankDrive(leftValue, rightValue);
 	}
 	
@@ -147,7 +147,7 @@ public class JoystickManager
 			shooter.shooterWheel.set(-0.85);
 			
 			if(System.currentTimeMillis() - t > 1000) {
-				if(System.currentTimeMillis() - time > 2000) {
+				/*if(System.currentTimeMillis() - time > 2000) {
 					time += System.currentTimeMillis();
 					time2 = System.currentTimeMillis();
 					shooter.agitator.set(0.99);
@@ -156,7 +156,8 @@ public class JoystickManager
 					time2 += System.currentTimeMillis();
 					time = System.currentTimeMillis();
 					shooter.agitator.set(-0.99);
-				}
+				}*/
+				shooter.agitator.set(-0.99);
 			}
 		}
 		else {
@@ -166,7 +167,7 @@ public class JoystickManager
 		}
 		
 		if(climb.get()) {
-			shooter.climber.set(0.6);//Needs to be tested
+			shooter.climber.set(0.5);//Needs to be tested
 		}
 		else if(stay.get()) {
 			shooter.climber.set(0.4);//Needs to be tested

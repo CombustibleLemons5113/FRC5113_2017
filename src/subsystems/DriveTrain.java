@@ -46,6 +46,11 @@ public class DriveTrain {
 	 	//navx.setAngleAdjustment(90.0);
 		
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		fr.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		bl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		br.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		/*
+		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
         fl.setProfile(0);
         fl.setF(0.1097);//Found it on the internet - Andy
@@ -76,7 +81,7 @@ public class DriveTrain {
         br.setP(0.22);//Found it on the internet - Andy
         br.setI(0); 
         br.setD(0);
-		
+		*/
 		startTime = System.currentTimeMillis();
 		
 		//roboDrive = new RobotDrive(bl, fl, br, fr);
