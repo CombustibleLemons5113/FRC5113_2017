@@ -190,10 +190,11 @@ public class JoystickManager
 		if(gearDrive.get())
 			gearHandler.drive(dt, nettab);
 		
-		/*if(stopAgit.get())
-			shooter.agitator.set(0);
+		/*if(changeAuton.get())
+			shooter.agitator.set(0.1);
 		else
-			shooter.agitator.set(-0.5);
+			shooter.agitator.set(0);*/
+		/*
 		else if(System.currentTimeMillis() - time > 1000) {
 			time += System.currentTimeMillis();
 			time2 = System.currentTimeMillis();

@@ -6,19 +6,14 @@ public class NTHandler
 {
 	private NetworkTable table;
 	private int mode, distance, zone;
+	private boolean connected = false;
 	
 	public void init()
 	{
-		table = NetworkTable.getTable("contoursReport");
-		zone = -1;
-		distance = -1;
-	}
-	
-	public void update()
-	{
-		zone = (int) table.getNumber("zone", -1);
+		table = NetworkTable.getTable("contoursReport");	zone = (int) table.getNumber("zone", -1);
 		mode = (int) table.getNumber("mode", -1);
 		distance = (int) table.getNumber("distance", -1);
+		connected = table.getBoolean("connected", false);
 	}
 	
 	public void print()
@@ -41,5 +36,10 @@ public class NTHandler
 	public int getDistance()
 	{
 		return distance;
+	}
+	
+	public boolean getConnected()
+	{
+		return connected;
 	}
 }

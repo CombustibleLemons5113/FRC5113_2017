@@ -62,8 +62,9 @@ public class Robot extends IterativeRobot {
     		debounce = System.currentTimeMillis();
     		manager.changeMode(controller.getChangeAuton());
         }
-    	nettab.update();
+    	//nettab.update();
     	nettab.print();
+    	System.out.println("Connected: " + nettab.getConnected());
     	
     	//shooter.climber.enableBrakeMode(true);
     	//controller.rumble(true);
@@ -98,7 +99,7 @@ public class Robot extends IterativeRobot {
     	controller.update(driveTrain, shooter, nettab, gearHandler);
     	driveTrain.update(controller);
     	shooter.update();
-    	nettab.update();
+    	//nettab.update();
     	//gearHandler.drive(driveTrain, nettab);
     	
     	/*if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 250) {
