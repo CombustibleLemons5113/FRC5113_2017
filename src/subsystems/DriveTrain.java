@@ -1,24 +1,20 @@
 package subsystems;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain {
 	
 	//Not PWM WHYYYYYYYYYYYYYYYYYYYYYYYYY!!!!!!!!
-	public CANTalon fl;
-	public CANTalon fr;
-	public CANTalon bl;
-	public CANTalon br;
+	public WPI_TalonSRX fl;
+	public WPI_TalonSRX fr;
+	public WPI_TalonSRX bl;
+	public WPI_TalonSRX br;
 	
 	public AHRS navx;
 	
@@ -35,20 +31,20 @@ public class DriveTrain {
 		//Initialize and set to CAN IDs.
 		//We can remap the IDs from within the web browser at roboRIO-5113.local
 
-		fl = new CANTalon(14);//All of these needs to be changed
-		fr = new CANTalon(1);
-		bl = new CANTalon(15);
-		br = new CANTalon(0);
+		fl = new WPI_TalonSRX(14);//All of these needs to be changed
+		fr = new WPI_TalonSRX(1);
+		bl = new WPI_TalonSRX(15);
+		br = new WPI_TalonSRX(0);
 		
-		navx = new AHRS(I2C.Port.kMXP);
+		navx = new AHRS(SerialPort.Port.kUSB);
 		navx.reset();
 		navx.resetDisplacement();
 	 	//navx.setAngleAdjustment(90.0);
 		
-		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		fr.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		bl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		br.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		fl.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		fr.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		bl.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		br.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		/*
 		fl.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         fl.reverseSensor(false);
@@ -97,6 +93,8 @@ public class DriveTrain {
 	
 	public void update(JoystickManager jm) {
 		elapsedTime = System.currentTimeMillis() - startTime;
+		SmartDashboard.putNumber("Gyro Angle", navx.getAngle());
+		//System.out.println("gyro angle" + navx.getAngle());
 		/*System.out.println("X: " + navx.getVelocityX() + "\nY: " + navx.getVelocityY() + "\nZ: " + navx.getVelocityZ());
 		System.out.println("Angle: " + navx.getAngle());*/
 	}

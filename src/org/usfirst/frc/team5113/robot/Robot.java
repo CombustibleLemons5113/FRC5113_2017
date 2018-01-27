@@ -8,6 +8,7 @@ import subsystems.NTHandler;
 import subsystems.Shooter;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -52,6 +53,13 @@ public class Robot extends IterativeRobot {
         
         CameraServer.getInstance().startAutomaticCapture(0);
         CameraServer.getInstance().startAutomaticCapture(1);
+        
+        SmartDashboard.putBoolean("Connected", false);
+		SmartDashboard.putString("Auto Mode", "None");
+		SmartDashboard.putNumber("Gyro Angle", -1);
+        SmartDashboard.putNumber("Distance (inches) (Gear)", -1);
+        SmartDashboard.putNumber("Range (meters) (Shooter)", -1);
+        SmartDashboard.putString("Auton Distance", "None");
     }
     
     //Dont know if this will work
@@ -62,7 +70,8 @@ public class Robot extends IterativeRobot {
     		debounce = System.currentTimeMillis();
     		manager.changeMode(controller.getChangeAuton());
         }
-    	//nettab.update();
+    	nettab.update();
+    	shooter.update();
     	nettab.print();
     	System.out.println("Connected: " + nettab.getConnected());
     	
@@ -99,7 +108,8 @@ public class Robot extends IterativeRobot {
     	controller.update(driveTrain, shooter, nettab, gearHandler);
     	driveTrain.update(controller);
     	shooter.update();
-    	//nettab.update();
+    	nettab.update();
+    	shooter.update();
     	//gearHandler.drive(driveTrain, nettab);
     	
     	/*if(controller.getChangeLight() && System.currentTimeMillis() - thyme > 250) {

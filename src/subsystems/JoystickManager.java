@@ -76,6 +76,10 @@ public class JoystickManager
 		y = getYAxis();
 		z = getZAxis();
 		
+		x *= 0.5;
+		y *= 0.5;
+		z *= 0.5;
+		
 		if (x > 0.99)
 			x = 0.99;
 		else if (x < -0.99)
@@ -167,7 +171,10 @@ public class JoystickManager
 		}
 		
 		if(climb.get()) {
-			shooter.climber.set(0.5);//Needs to be tested
+			shooter.climber.set(0.8);//Needs to be tested
+		}
+		else if(changeLight.get()) {
+			shooter.climber.set(0.5);
 		}
 		else if(stay.get()) {
 			shooter.climber.set(0.4);//Needs to be tested

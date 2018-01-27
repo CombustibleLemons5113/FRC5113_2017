@@ -81,6 +81,6 @@ public class AutonManager
 		else if(caseSelector == 7)
 			autoName = "Forward";
 		
-		SmartDashboard.putString("Auto Mode", autoName);
+		SmartDashboard.putString("Auto Mode", autoName + " (" + caseSelector + ")");
 	}
 }

@@ -1,5 +1,6 @@
 package auton;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.DriveTrain;
 import subsystems.NTHandler;
 
@@ -19,13 +20,15 @@ public class MiddleGearVision extends GearFrame
 		{
 		case 1:
 			System.out.println("Driving forward - middle");
-			dt.mecanumDrive2(0.5, 0, 0, angle);
+			SmartDashboard.putString("Auton Distance", "Driving forward - middle");
+			dt.mecanumDrive2(0.3, 0, 0, angle); //set back to 0.5
 			
 			if(nettab.getZone() == 1 || nettab.getZone() == 2 || nettab.getZone() == 3)
 				caseSelector++;
 			break;
 		case 2:
 			System.out.println("Driving to peg - coarse");
+			SmartDashboard.putString("Auton Distance", "Driving to peg - coarse");
 			if(nettab.getZone() == 3)
 				dt.mecanumDrive2(0.15, 40, 0, angle);
 			else if(nettab.getZone() == 2)
@@ -39,6 +42,7 @@ public class MiddleGearVision extends GearFrame
 			break;
 		case 3:
 			System.out.println("Driving to peg - fine");
+			SmartDashboard.putString("Auton Distance", "Driving to peg - fine");
 			if(nettab.getZone() == 3)
 				dt.mecanumDrive2(0.1, 90, 0, angle);
 			else if(nettab.getZone() == 2)
